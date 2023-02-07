@@ -1,11 +1,17 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { defineProps } from 'vue';
 
-defineProps({
+const props = defineProps({
   post: 'Object',
 })
+
+const form = useForm({});
+
+const deletePost = () => {
+  form.delete(route('post.destroy', props.post));
+}
 
 </script>
 
@@ -18,14 +24,14 @@ defineProps({
         </template>
 
         <div class="py-12">
-            <div @submit.prevent="submit" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <button @click="deletePost" class="text-red-400">削除</button>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div>{{ post.title }}</div>
                 <div>{{ post.description }}</div>
                 <ul>
                   <li v-for="article in post.articles" :key="article.id">
                     {{ article.title }}
                     <img :src="article.thumbnail_url" :alt="article.title">
-                    
                   </li>
                 </ul>
             </div>

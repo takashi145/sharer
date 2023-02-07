@@ -53,4 +53,9 @@ class PostController extends Controller
             'post' => Post::with('articles')->findOrFail($id),
         ]);
     }
+
+    public function destroy(Post $post) {
+        $post->delete();
+        return to_route('post.index');
+    }
 }
