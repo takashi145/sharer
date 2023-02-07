@@ -36,16 +36,16 @@ const updatePassword = () => {
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
+            <h2 class="text-lg font-medium text-gray-900">パスワード変更</h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Ensure your account is using a long, random password to stay secure.
+                安全性を確保するために、アカウントが長いランダムなパスワードを使用していることを確認してください。
             </p>
         </header>
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="current_password" value="現在のパスワード" />
 
                 <TextInput
                     id="current_password"
@@ -60,7 +60,7 @@ const updatePassword = () => {
             </div>
 
             <div>
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="password" value="新しいパスワード" />
 
                 <TextInput
                     id="password"
@@ -75,7 +75,7 @@ const updatePassword = () => {
             </div>
 
             <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="パスワード確認" />
 
                 <TextInput
                     id="password_confirmation"

@@ -3,7 +3,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 import { defineProps } from 'vue';
 
-
 const props = defineProps({
   post: 'Object',
 })
@@ -12,6 +11,14 @@ const form = useForm({});
 
 const deletePost = () => {
   form.delete(route('post.destroy', props.post));
+}
+
+const like = () => {
+  router.put(`/post/${props.post.id}/like`);
+}
+
+const unlike = () => {
+  router.delete(`/post/${props.post.id}/like`);
 }
 
 </script>
@@ -32,17 +39,15 @@ const deletePost = () => {
                     <div class="xl:w-1/2 lg:w-3/4 w-full mx-auto text-center">
                       <h3 class="text-4xl mb-3">{{ post.title }}</h3>
                       <span class="inline-block h-1 w-32 rounded bg-indigo-500 mb-6"></span>
+                      <div class="flex justify-center flex-col">
+                        <button v-if="!post.isLiked" @click="like" :disabled="form.processing" class="mx-auto w-1/3 text-white bg-green-400 hover:bg-green-500 p-2 rounded"> + 役に立った!</button>
+                        <button v-else @click="unlike" :disabled="form.processing" class="mx-auto w-1/3 text-white bg-red-400 hover:bg-red-500 p-2 rounded"> - 解除</button>
+                      </div>
                       <p class="leading-relaxed text-lg mb-3">
                         {{ post.description }}
                       </p>
                       <div v-if="$page.props.auth.user.id === post.user_id" class="w-full lg:w-2/3 mx-auto mb-4">
                         <Link :href="route('post.edit', post.id)" class="  text-indigo-400 hover:text-indigo-600 hover:underline">編集</Link>
-                      </div>
-                      <div 
-                        v-if="$page.props.auth.user.id !== post.user_id
-                          && post.articles.length > 1"
-                      >
-                        <button class="text-white bg-green-400 hover:bg-green-500 p-3 rounded">役に立った！</button>
                       </div>
                     </div>
                   </div>

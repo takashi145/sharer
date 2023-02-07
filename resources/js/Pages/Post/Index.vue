@@ -17,7 +17,7 @@ const props = defineProps({
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">PostList</h2>
         </template>
 
-        <div v-if="posts.length >= 1" class="py-12">
+        <div v-if="posts && posts.length >= 1" class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div class="text-gray-600 body-font">
                 <div class="container px-5 mx-auto flex flex-wrap">

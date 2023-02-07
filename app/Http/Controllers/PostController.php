@@ -68,8 +68,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post = $post->load('articles');
+        $post['isLiked'] = $post->isLiked(Auth::user());
         return Inertia::render('Post/Show', [
-            'post' => $post->load('articles'),
+            'post' => $post,
         ]);
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Article;
@@ -39,6 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
     Route::post('/post/{post}/articles', [ArticleController::class, 'store'])->name('article.create');
     Route::post('/post/{post}/articles/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
+
+    Route::put('/post/{post}/like', [LikeController::class, 'like'])->name('post.like');
+    Route::delete('/post/{post}/like', [LikeController::class, 'unlike'])->name('post.unlike');
 });
 
 require __DIR__.'/auth.php';
