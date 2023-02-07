@@ -18,7 +18,6 @@ class ArticleFactory extends Factory
     public function definition()
     {
         return [
-            'post_id' => Post::factory(),
             'url' => fake()->url(),
             'title' => fake()->word(),
             'description' => fake()->realText(200),

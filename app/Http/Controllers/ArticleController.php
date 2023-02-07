@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ArticleController extends Controller
@@ -14,28 +15,34 @@ class ArticleController extends Controller
      */
     public function store(Request $request, Post $post)
     {
-        $article = null;
-        $article = Article::FirstOrNew([
-            'url' => $request->input('url')
-        ]);
-        $isExists = $article->exists();
-        $dt_ago = now()->subMonth();
+        DB::beginTransaction();
+        try {
+            $article = null;
+            $article = Article::FirstOrNew([
+                'url' => $request->input('url')
+            ]);
+            $isExists = $article->exists();
+            $dt_ago = now()->subMonth();
 
-        if(!$isExists || ($isExists && $article->updated_at < $dt_ago)) {
-            if($article->setAttributes($request->input('url'))){
-                $article->post_id = $post->id;
-                $article->updated_at = now();
-                $article->save();
+            if(!$isExists || ($isExists && $article->updated_at < $dt_ago)) {
+                if($article->setAttributes($request->input('url'))){
+                    $article->updated_at = now();
+                    $article->save();
+                }
             }
+            $article->posts()->sync($post->id);
+            DB::commit();
+            return to_route('post.show', $post->id);
+        }catch(\Exception $e) {
+            DB::rollBack();
+            dd($e);
         }
 
-        return to_route('post.show', $post->id);
     }
 
     public function destroy(Post $post, Article $article)
     {
-        dd($post);
-        $article->delete();
+        $article->posts()->detach($post->id);
         return back();
     }
 }

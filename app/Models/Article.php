@@ -10,12 +10,16 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable = [
-        'post_id',
         'url',
         'title',
         'description',
         'thumbnail_url',
     ];
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class);
+    }
 
     public function getTitleAttribute($value)
     {

@@ -41,7 +41,7 @@ class PostController extends Controller
             'user_id' => Auth::id(),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'published' => 0
+            'published' => 1
         ]);
 
         return to_route('post.index');

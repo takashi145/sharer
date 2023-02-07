@@ -22,8 +22,5 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
         
-        Post::factory(50)->create()->each(function ($post) {
-            Article::factory(3)->create(['post_id' => $post->id]);
-        });
     }
 }
