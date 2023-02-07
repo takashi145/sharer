@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Article;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('post', PostController::class);
+
+    Route::post('/post/{post}/articles', [ArticleController::class, 'store'])->name('article.create');
+    Route::post('/post/{post}/articles/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
 });
 
 require __DIR__.'/auth.php';

@@ -47,6 +47,9 @@ class PostController extends Controller
         return to_route('post.index');
     }
 
+     /**
+     * 投稿詳細画面を表示
+     */
     public function show($id)
     {
         return Inertia::render('Post/Show', [
@@ -54,6 +57,29 @@ class PostController extends Controller
         ]);
     }
 
+     /**
+     * 投稿編集画面を表示
+     */
+    // public function edit($id)
+    // {
+    //     return Inertia::render('Post/Edit', [
+    //         'post' => Post::with('articles')->findOrFail($id),
+    //     ]);
+    // }
+
+
+    //  /**
+    //  * 投稿を編集
+    //  */
+    // public function update(Post $post)
+    // {
+    //     $post->
+    // }
+
+
+     /**
+     * 投稿を削除
+     */
     public function destroy(Post $post) {
         $post->delete();
         return to_route('post.index');
