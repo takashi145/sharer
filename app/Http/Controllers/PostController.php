@@ -15,6 +15,7 @@ class PostController extends Controller
     {
         $this->authorizeResource(Post::class, 'post');
     }
+
     /**
      * 投稿一覧を表示
      */
@@ -41,14 +42,18 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Post::create([
+        $post = Post::create([
             'user_id' => Auth::id(),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'published' => 1
         ]);
 
-        return to_route('post.index');
+        return to_route('post.show', $post->id)
+            ->with('flash', [
+                'status' => 'success',
+                'message' => '投稿を作成しました。',
+            ]);
     }
 
      /**
@@ -64,21 +69,29 @@ class PostController extends Controller
      /**
      * 投稿編集画面を表示
      */
-    // public function edit($id)
-    // {
-    //     return Inertia::render('Post/Edit', [
-    //         'post' => Post::with('articles')->findOrFail($id),
-    //     ]);
-    // }
+    public function edit(Post $post)
+    {
+        return Inertia::render('Post/Edit', [
+            'post' => $post->load('articles'),
+        ]);
+    }
 
 
-    //  /**
-    //  * 投稿を編集
-    //  */
-    // public function update(Post $post)
-    // {
-    //     $post->
-    // }
+     /**
+     * 投稿を編集
+     */
+    public function update(Request $request, Post $post)
+    {
+        $post->title = $request->input('title');
+        $post->description = $request->input('description');
+        $post->save();
+
+        return to_route('post.show', $post->id)
+            ->with('flash', [
+                'status' => 'success',
+                'message' => '更新しました。'
+            ]);
+    }
 
 
      /**
@@ -86,6 +99,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post) {
         $post->delete();
-        return to_route('post.index');
+        return to_route('post.index')
+            ->with('flash', [
+                'status' => 'error',
+                'message' => '投稿を削除しました。',
+            ]);
     }
 }

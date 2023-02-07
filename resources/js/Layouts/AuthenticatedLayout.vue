@@ -145,6 +145,18 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main>
+                <div v-if="$page.props.flash.message" class="absolute top-36 w-full">
+                    <div 
+                        :class='[
+                            $page.props.flash.status === "success" 
+                            ? "bg-green-400" 
+                            : "bg-red-400"
+                        ]'
+                        class="text-white w-2/3 rounded mx-auto text-center p-2"
+                    >
+                        {{ $page.props.flash.message }}
+                    </div>
+                </div>
                 <slot />
             </main>
         </div>
