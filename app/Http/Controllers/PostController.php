@@ -11,6 +11,10 @@ use Inertia\Inertia;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class, 'post');
+    }
     /**
      * 投稿一覧を表示
      */
@@ -50,10 +54,10 @@ class PostController extends Controller
      /**
      * 投稿詳細画面を表示
      */
-    public function show($id)
+    public function show(Post $post)
     {
         return Inertia::render('Post/Show', [
-            'post' => Post::with('articles')->findOrFail($id),
+            'post' => $post->load('articles'),
         ]);
     }
 

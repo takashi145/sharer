@@ -45,7 +45,6 @@ class Article extends Model
     }
 
 
-    // Others
     public function setAttributes($url) 
     {
         $this->url = $url;

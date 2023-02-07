@@ -37,9 +37,11 @@ class ArticleController extends Controller
             DB::rollBack();
             dd($e);
         }
-
     }
 
+    /**
+     * 指定された投稿(post)と記事(article)の紐づけを削除
+     */
     public function destroy(Post $post, Article $article)
     {
         $article->posts()->detach($post->id);
