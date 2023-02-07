@@ -18,6 +18,7 @@ const show = ref(false);
 const form = useForm({
   'title': props.post.title,
   'description': props.post.description,
+  'published': props.post.published
 });
 
 const url_form = useForm({
@@ -36,7 +37,12 @@ const deleteArticle = article_id => {
 }
 
 const addArticle = () => {
-  url_form.post(route('article.create', props.post));
+  url_form.post(route('article.create', props.post), {
+    onSuccess: () => {
+      form.reset('url');
+      show.value = false;
+    }
+  });
 }
 </script>
 
@@ -50,13 +56,16 @@ const addArticle = () => {
 
         <div class="py-12">
           <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="w-full lg:w-2/3 mx-auto mb-4">
+              <Link :href="route('post.show', post.id)" class="  text-indigo-400 hover:text-indigo-600 hover:underline">詳細へ戻る</Link>
+            </div>
             <form @submit.prevent="submit" class="w-full lg:w-2/3 mx-auto space-y-5">
               <h3 class="text-3xl text-center border-b-2 font-serif pb-3">編集</h3>
               <div>
-                <InputLabel for="name" value="タイトル" />
+                <InputLabel for="title" value="タイトル" />
 
                 <TextInput
-                    id="name"
+                    id="title"
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.title"
@@ -66,7 +75,7 @@ const addArticle = () => {
                     placeholder="タイトルを50文字以内で入力してください."
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError class="mt-2" :message="form.errors.title" />
               </div>
 
               <div>
@@ -83,10 +92,24 @@ const addArticle = () => {
                 <InputError class="mt-2" :message="form.errors.name" />
               </div>
 
+              <div v-if="post.articles.length > 0">
+                <InputLabel for="name" value="公開設定" />
+                
+                <div class="space-x-3 mt-2">
+                  <input type="checkbox" v-model="form.published" :true-value="1">公開
+                  <input type="checkbox" v-model="form.published" :true-value="0">非公開  
+                </div>
+
+                <InputError class="mt-2" :message="form.errors.published" />
+              </div>
+              <div v-else class="text-red-400">
+                記事が１つも登録されていないため、非公開状態となります。
+              </div>
+
               <div class="text-center">
                 <PrimaryButton class="w-full py-3">
                   <div class="text-center w-full">
-                    Submit
+                    Update
                   </div>
                 </PrimaryButton>
               </div>
@@ -107,10 +130,14 @@ const addArticle = () => {
 
               <Modal :show="show">
                 <div class="p-3">
-                  <form @submit.prevent="addArticle" class="w-full lg:w-2/3 mx-auto space-y-5">
+                  <form @submit.prevent="addArticle" class="w-full mx-auto space-y-5">
                     <h3 class="text-xl border-b-2 font-serif pb-3">リンクを追加</h3>
                     <div class="px-3 mb-8">
                       <InputLabel for="name" value="URL" class="text-lg" />
+
+                      <p class="text-sm text-gray-800 my-3">
+                        日本語などを含むurlは追加できない場合があります。
+                      </p>
 
                       <div class="flex">
                         <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
@@ -151,15 +178,11 @@ const addArticle = () => {
                   </div>
                 </div>
               </div>
-              <div v-else class="mt-24 text-center text-lg">
-                <p class="mb-8">
+              <div v-else class="my-16 text-center text-lg">
+                <p class="">
                   記事がありません。<br />
-                  記事がひとつもない場合は自動的に非公開状態となります。  
+                  記事がない場合は非公開状態となります。  
                 </p>
-                
-                <Link :href="route('post.edit', post)" class="text-white bg-blue-400 hover:bg-blue-500 p-3 rounded">
-                  記事を追加
-                </Link>
               </div>
             </div>
           </div>

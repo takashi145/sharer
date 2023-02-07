@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -21,7 +22,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->where('published', '=', 1)->get();
+        $posts = Post::with(['user'])
+            ->where('published', '=', 1)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        
         return Inertia::render('Post/Index', [
             'posts' => $posts
         ]);
@@ -46,10 +51,10 @@ class PostController extends Controller
             'user_id' => Auth::id(),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'published' => 1
+            'published' => 0
         ]);
 
-        return to_route('post.show', $post->id)
+        return to_route('post.edit', $post->id)
             ->with('flash', [
                 'status' => 'success',
                 'message' => '投稿を作成しました。',
@@ -58,6 +63,8 @@ class PostController extends Controller
 
      /**
      * 投稿詳細画面を表示
+     * 
+     * @param App\Models\Post $post
      */
     public function show(Post $post)
     {
@@ -68,6 +75,8 @@ class PostController extends Controller
 
      /**
      * 投稿編集画面を表示
+     * 
+     * @param App\Models\Post $post
      */
     public function edit(Post $post)
     {
@@ -79,11 +88,18 @@ class PostController extends Controller
 
      /**
      * 投稿を編集
+     * 
+     * @param App\Http\Requests\UpdatePostRequest $request
+     * @param App\Models\Post $post
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
         $post->title = $request->input('title');
         $post->description = $request->input('description');
+        $post->published = $request->input('published');
+        if(count($post->articles) === 0) {
+            $post->published = 0;
+        }
         $post->save();
 
         return to_route('post.show', $post->id)
@@ -96,6 +112,8 @@ class PostController extends Controller
 
      /**
      * 投稿を削除
+     * 
+     * @param App\Models\Post $post
      */
     public function destroy(Post $post) {
         $post->delete();

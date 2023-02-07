@@ -52,7 +52,6 @@ class Article extends Model
             // urlから情報を取得
             $html = file_get_contents($url);
         } catch (\Exception $e) {
-            dd($e);
             return false;
         }
 

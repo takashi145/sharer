@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -12,8 +13,11 @@ class ArticleController extends Controller
 {
      /**
      * 記事の保存
+     * 
+     * @param App\Http\Requests\StoreArticleRequest $request
+     * @param App\Models\Post $post
      */
-    public function store(Request $request, Post $post)
+    public function store(StoreArticleRequest $request, Post $post)
     {
         DB::beginTransaction();
         try {
@@ -39,20 +43,38 @@ class ArticleController extends Controller
             ]);;
         }catch(\Exception $e) {
             DB::rollBack();
-            dd($e);
+            return back()
+            ->with('flash', [
+                'status' => 'error',
+                'message' => 'リンクの追加に失敗しました。'
+            ]);
         }
     }
 
     /**
      * 指定された投稿(post)と記事(article)の紐づけを削除
+     * 
+     * @param App\Models\Post $post
+     * @param App\Models\Article $article
      */
     public function destroy(Post $post, Article $article)
     {
-        $article->posts()->detach($post->id);
-        return back()
-        ->with('flash', [
-            'status' => 'error',
-            'message' => '記事を削除しました。',
-        ]);
+        DB::beginTransaction();
+        try {
+            $article->posts()->detach($post->id);
+            if(count($post->articles) === 0) {
+                $post->published = false;
+                $post->save();
+            }
+            DB::commit();
+        }catch(\Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+
+        return to_route('post.show', $post->id)->with('flash', [
+                'status' => 'error',
+                'message' => '記事を削除しました。',
+            ]);
     }
 }

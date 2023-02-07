@@ -35,6 +35,9 @@ const submit = () => {
 
         <div class="py-12">
           <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="w-full lg:w-2/3 mx-auto mb-4">
+              <Link :href="route('post.index')" class="  text-indigo-400 hover:text-indigo-600 hover:underline">一覧へ戻る</Link>
+            </div>
             <form @submit.prevent="submit" class="w-full lg:w-2/3 mx-auto space-y-5">
               <div>
                 <InputLabel for="name" value="タイトル" />

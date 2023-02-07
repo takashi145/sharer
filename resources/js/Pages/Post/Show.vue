@@ -35,6 +35,9 @@ const deletePost = () => {
                       <p class="leading-relaxed text-lg mb-3">
                         {{ post.description }}
                       </p>
+                      <div v-if="$page.props.auth.user.id === post.user_id" class="w-full lg:w-2/3 mx-auto mb-4">
+                        <Link :href="route('post.edit', post.id)" class="  text-indigo-400 hover:text-indigo-600 hover:underline">編集</Link>
+                      </div>
                       <div 
                         v-if="$page.props.auth.user.id !== post.user_id
                           && post.articles.length > 1"
@@ -47,7 +50,12 @@ const deletePost = () => {
 
                 <div class="container px-5 mx-auto">
                   <div v-if="post.articles.length >= 1" class="flex flex-wrap -m-4">
-                    <div v-for="article in post.articles" :key="article.id" class="w-full lg:w-1/2">
+                    <div 
+                      v-for="article in post.articles" 
+                      :key="article.id" 
+                      class="w-full lg:w-1/2"
+                      :class="[post.articles.length <= 1 ? 'lg:mx-auto' : '']"
+                    >
                       <a :href="article.url" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-lg hover:cursor-pointer m-8 p-1 shadow-lg hover:opacity-80">
                         <img class="h-80 rounded w-full object-cover object-center mb-6 border" :src="article.thumbnail_url" alt="content">
                         <div class="px-3 h-24 overflow-hidden">
@@ -62,10 +70,6 @@ const deletePost = () => {
                       記事がありません。<br />
                       記事がひとつもない場合は自動的に非公開状態となります。  
                     </p>
-                    
-                    <Link :href="route('post.edit', post)" class="text-white bg-blue-400 hover:bg-blue-500 p-3 rounded">
-                      記事を追加
-                    </Link>
                   </div>
                 </div>
               </div>

@@ -30,8 +30,9 @@ const submit = () => {
         <Head title="Reset Password" />
 
         <form @submit.prevent="submit">
+            <h3 class="text-xl font-semibold text-center mb-4">パスワード再設定</h3>
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="メールアドレス" />
 
                 <TextInput
                     id="email"
@@ -47,7 +48,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="パスワード" />
 
                 <TextInput
                     id="password"
@@ -62,7 +63,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="パスワード確認" />
 
                 <TextInput
                     id="password_confirmation"
