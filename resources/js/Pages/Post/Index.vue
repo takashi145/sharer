@@ -38,7 +38,7 @@ const props = defineProps({
                         <div class="flex-grow">
                           <p class="mb-3">
                             投稿者：
-                            <Link href="/" class="hover:underline">{{ post.user.name }}</Link>
+                            <Link :href="route('user.index', post.user.id)" class="hover:underline text-xl">{{ post.user.name }}</Link>
                           </p>
                           <h2 class="text-gray-900 text-xl title-font font-medium mb-3">{{ post.title }}</h2>
                           <p class="text-end">更新日：{{ TimeDiff(post.updated_at) }}</p>
