@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Article;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
         
-        Post::factory(50)->create();
+        Post::factory(50)->create()->each(function ($post) {
+            Article::factory(3)->create(['post_id' => $post->id]);
+        });
     }
 }

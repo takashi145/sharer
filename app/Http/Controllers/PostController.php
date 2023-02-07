@@ -46,4 +46,11 @@ class PostController extends Controller
 
         return to_route('post.index');
     }
+
+    public function show($id)
+    {
+        return Inertia::render('Post/Show', [
+            'post' => Post::with('articles')->findOrFail($id),
+        ]);
+    }
 }
