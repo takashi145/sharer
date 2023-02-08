@@ -21,7 +21,8 @@ class PostDetailResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'articles' => $this->articles,
-            'isLiked' => $this->isLiked(Auth::user())
+            'isLiked' => $this->isLiked(Auth::user()),
+            'published' => $this->published
         ];
     }
 }

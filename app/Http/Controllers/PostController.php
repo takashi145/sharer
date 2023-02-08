@@ -7,12 +7,14 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PostController extends Controller
 {
+    /**
+     * アクセス制限
+     */
     public function __construct()
     {
         $this->authorizeResource(Post::class, 'post');

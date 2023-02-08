@@ -1,12 +1,13 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import TimeDiff from '@/utils/time-diff';
 
-defineProps({
+const props = defineProps({
   posts: Array,
   user: Object,
+  type: String
 })
 
 const deletePost = post_id => {
@@ -45,8 +46,46 @@ const deletePost = post_id => {
                 </div>
               </div>
 
-              <div v-if="posts && posts.length >= 1" class="text-gray-600 body-font">
-                <div class="container px-5 mx-auto flex flex-wrap">
+              <div class="text-gray-600 body-font">
+                
+                <ul v-if="$page.props.auth.user.id === user.id" class="mt-8 mx-auto px-5 flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                    <li class="mr-2">
+                        <Link
+                          :href="route('user.index', user.id)"
+                          :data="{type: 'mine'}" 
+                          :only="['posts', 'type']"
+                          :class="[type !== 'favorite' ? 'text-blue-600 bg-slate-300 cursor-default' : 'hover:bg-gray-200 cursor-pointer']"
+                          class="inline-block p-4 rounded-t-lg "
+                        > 
+                          自分の投稿
+                        </Link>
+                    </li>
+                    <li class="mr-2">
+                      <Link
+                        :href="route('user.index', user.id)"
+                        :data="{type: 'favorite'}"
+                        :only="['posts', 'type']"
+                        :class="[type === 'favorite' ? 'text-blue-600 bg-slate-300 cursor-default' : 'hover:bg-gray-200 cursor-pointer']"
+                        class="inline-block p-4 rounded-t-lg "
+                      > 
+                        お気に入り
+                      </Link>
+                    </li>
+                </ul>
+
+                <ul v-else class="mt-8 mx-auto px-5 flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                    <li class="mr-2">
+                        <div 
+                          class="inline-block p-4 rounded-t-lg text-blue-600 bg-slate-300 cursor-default"
+                        > 
+                          {{user.name}}の投稿
+                        </div>
+                    </li>
+                </ul>
+
+
+
+                <div v-if="posts && posts.length >= 1" class="container px-5 mx-auto flex flex-wrap">
                   <div class="flex flex-wrap mx-auto w-full">
                     <div
                       v-for="post in posts" 
@@ -68,7 +107,7 @@ const deletePost = post_id => {
                           </Link>
 
                           <div class="">
-                            いいね数：　{{ post.like.length }}
+                            いいね数：　{{ post.like_count }}
                           </div>
                           
                         </div>
@@ -91,9 +130,10 @@ const deletePost = post_id => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div v-else class="text-gray-600 text-3xl flex justify-center mt-48">
-                投稿が有りません
+
+                <div v-else class="text-gray-600 text-3xl flex justify-center mt-48">
+                  投稿が有りません
+                </div>
               </div>
             </div>
         </div>

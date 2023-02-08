@@ -14,7 +14,7 @@ class LikeController extends Controller
      */
     public function like(Post $post)
     {
-        Auth::user()->like()->sync($post->id);
+        $post->like()->sync(Auth::id());
         return Redirect::back();
     }
 
