@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function() {
-    Route::resource('post', PostController::class);
+    Route::resource('post', PostController::class)->except('create');
 
     Route::post('/post/{post}/articles', [ArticleController::class, 'store'])->name('article.create');
     Route::post('/post/{post}/articles/{article}', [ArticleController::class, 'destroy'])->name('article.delete');

@@ -33,14 +33,6 @@ class PostController extends Controller
     }
 
     /**
-     * 投稿作成画面を表示
-     */
-    public function create()
-    {
-        return Inertia::render('Post/Create');
-    }
-
-    /**
      * 投稿を保存
      * 
      * @param App\Http\Requests\StorePostRequest $request

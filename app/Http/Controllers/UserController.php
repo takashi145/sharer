@@ -17,7 +17,7 @@ class UserController extends Controller
         $posts = null;
         // ログインユーザーの場合は非公開の投稿も取得
         if(Auth::id() === $user->id) {
-            $posts = Auth::user()->posts()->get();
+            $posts = Auth::user()->posts()->with('like')->get();
         }else {
             $posts = $user->posts()->where('published', '=', 1)->get();
         }

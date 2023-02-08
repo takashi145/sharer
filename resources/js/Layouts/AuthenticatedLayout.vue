@@ -6,8 +6,10 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import FlashMessage from '@/Components/FlashMessage.vue';
 
 const showingNavigationDropdown = ref(false);
+
 </script>
 
 <template>
@@ -145,18 +147,7 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main>
-                <div v-if="$page.props.flash.message" class="absolute top-36 w-full">
-                    <div 
-                        :class='[
-                            $page.props.flash.status === "success" 
-                            ? "bg-green-400" 
-                            : "bg-red-400"
-                        ]'
-                        class="text-white w-2/3 rounded mx-auto text-center p-2"
-                    >
-                        {{ $page.props.flash.message }}
-                    </div>
-                </div>
+                <FlashMessage :status="$page.props.flash.status" :message="$page.props.flash.message" />
                 <slot />
             </main>
         </div>

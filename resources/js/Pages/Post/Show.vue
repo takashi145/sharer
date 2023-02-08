@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, Link, router } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 
 const props = defineProps({
   post: 'Object',
@@ -9,16 +9,25 @@ const props = defineProps({
 
 const form = useForm({});
 
-const deletePost = () => {
-  form.delete(route('post.destroy', props.post));
-}
+const loading = ref(false);
 
 const like = () => {
-  router.put(`/post/${props.post.id}/like`);
+  loading.value = true;
+  router.put(`/post/${props.post.id}/like`, {}, {
+    onFinish: () => setTimeout(() => {
+      loading.value = false;
+    }, 3000)
+  });
+
 }
 
 const unlike = () => {
-  router.delete(`/post/${props.post.id}/like`);
+  loading.value = true;
+  router.delete(`/post/${props.post.id}/like`, {
+    onFinish: () => setTimeout(() => {
+      loading.value = false;
+    }, 3000)
+  });
 }
 
 </script>
@@ -37,18 +46,37 @@ const unlike = () => {
                 <div class="mb-8 text-gray-600 body-font">
                   <div class="container px-5 mx-auto">
                     <div class="xl:w-1/2 lg:w-3/4 w-full mx-auto text-center">
-                      <h3 class="text-4xl mb-3">{{ post.title }}</h3>
-                      <span class="inline-block h-1 w-32 rounded bg-indigo-500 mb-6"></span>
-                      <div class="flex justify-center flex-col">
-                        <button v-if="!post.isLiked" @click="like" :disabled="form.processing" class="mx-auto w-1/3 text-white bg-green-400 hover:bg-green-500 p-2 rounded"> + 役に立った!</button>
-                        <button v-else @click="unlike" :disabled="form.processing" class="mx-auto w-1/3 text-white bg-red-400 hover:bg-red-500 p-2 rounded"> - 解除</button>
-                      </div>
+                      <h3 class="flex justify-center items-center text-4xl mb-3 space-x-3">
+                        <div>{{ post.title }}</div>
+                        <div v-if="!loading" class="flex">
+                          <button 
+                            v-if="!post.isLiked" 
+                            @click="like" 
+                            :disabled="form.processing || loading"
+                          > 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-gray-400 hover:text-red-500 hover:scale-105">
+                              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                            </svg>
+                          </button>
+                          <button 
+                            v-else 
+                            @click="unlike" 
+                            :disabled="form.processing || loading" 
+                          > 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-red-400 hover:text-red-500 hover:scale-105">
+                              <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <div v-else className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+                        
+                      </h3>
+                      <span class="inline-block h-1 w-32 rounded bg-indigo-500 mb-3"></span>
+              
                       <p class="leading-relaxed text-lg mb-3">
                         {{ post.description }}
                       </p>
-                      <div v-if="$page.props.auth.user.id === post.user_id" class="w-full lg:w-2/3 mx-auto mb-4">
-                        <Link :href="route('post.edit', post.id)" class="  text-indigo-400 hover:text-indigo-600 hover:underline">編集</Link>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -61,7 +89,7 @@ const unlike = () => {
                       class="w-full lg:w-1/2"
                       :class="[post.articles.length <= 1 ? 'lg:mx-auto' : '']"
                     >
-                      <a :href="article.url" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-lg hover:cursor-pointer m-8 p-1 shadow-lg hover:opacity-80">
+                      <a :href="article.url" target="_blank" rel="noopener noreferrer" class="block bg-slate-300 rounded-lg hover:cursor-pointer m-8 p-1 shadow-lg hover:opacity-80">
                         <img class="h-80 rounded w-full object-cover object-center mb-6 border" :src="article.thumbnail_url" alt="content">
                         <div class="px-3 h-24 overflow-hidden">
                           <h2 class="text-lg text-gray-900 font-medium title-font mb-4">{{ article.title }}</h2>
@@ -72,8 +100,7 @@ const unlike = () => {
                   </div>
                   <div v-else class="mt-24 text-center text-lg">
                     <p class="mb-8">
-                      記事がありません。<br />
-                      記事がひとつもない場合は自動的に非公開状態となります。  
+                      記事がありません。
                     </p>
                   </div>
                 </div>

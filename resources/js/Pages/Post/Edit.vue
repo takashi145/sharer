@@ -55,11 +55,12 @@ const addArticle = () => {
         </template>
 
         <div class="py-12">
-          <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="w-full lg:w-2/3 mx-auto mb-4">
-              <Link :href="route('post.show', post.id)" class="  text-indigo-400 hover:text-indigo-600 hover:underline">詳細へ戻る</Link>
-            </div>
+          <div class=" max-w-7xl mx-auto sm:px-6 lg:px-8">
+            
             <form @submit.prevent="submit" class="w-full lg:w-2/3 mx-auto space-y-5">
+              <div class="w-full mx-auto mb-4">
+                <Link :href="route('post.show', post.id)" class="  text-indigo-400 hover:text-indigo-600 hover:underline">詳細へ戻る</Link>
+              </div>
               <h3 class="text-3xl text-center border-b-2 font-serif pb-3">編集</h3>
               <div>
                 <InputLabel for="title" value="タイトル" />
@@ -103,7 +104,7 @@ const addArticle = () => {
                 <InputError class="mt-2" :message="form.errors.published" />
               </div>
               <div v-else class="text-red-400">
-                記事が１つも登録されていないため、非公開状態となります。
+                記事が登録されていないため、非公開状態となります。
               </div>
 
               <div class="text-center">
