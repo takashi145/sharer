@@ -1,4 +1,5 @@
 <script setup>
+import LinkCard from '@/Components/LinkCard.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, Link, router } from '@inertiajs/vue3';
 import { defineProps, ref } from 'vue';
@@ -90,13 +91,7 @@ const unlike = () => {
                       class="w-full lg:w-1/2"
                       :class="[post.articles.length <= 1 ? 'lg:mx-auto' : '']"
                     >
-                      <a :href="article.url" target="_blank" rel="noopener noreferrer" class="block bg-slate-300 rounded-lg hover:cursor-pointer m-8 p-1 shadow-lg hover:opacity-80">
-                        <img class="h-80 rounded w-full object-cover object-center mb-6 border" :src="article.thumbnail_url" alt="content">
-                        <div class="px-3 h-24 overflow-hidden">
-                          <h2 class="text-lg text-gray-900 font-medium title-font mb-4">{{ article.title }}</h2>
-                          <p class="leading-relaxed text-base">{{ article.description }}</p>  
-                        </div>
-                      </a>
+                      <LinkCard :article="article" />
                     </div>
                   </div>
                   <div v-else class="mt-24 text-center text-lg">

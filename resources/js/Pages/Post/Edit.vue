@@ -7,6 +7,7 @@ import TextInput from '@/Components/TextInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Modal from '@/Components/Modal.vue';
+import LinkCard from '@/Components/LinkCard.vue';
 
 const props = defineProps({
   post: Object,
@@ -162,21 +163,11 @@ const addArticle = () => {
               </Modal>
               <div v-if="post.articles.length >= 1" class="flex flex-wrap -m-4">
                 <div v-for="article in post.articles" :key="article.id" class="w-full lg:w-1/2 md:p-0">
-                  <div :href="article.url" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-lg p-1 shadow-lg m-8">
-                    <img class="h-80 rounded w-full object-cover object-center mb-6 border" :src="article.thumbnail_url" alt="content">
-                    <div class="px-3 h-24 overflow-hidden">
-                      <h2 class="text-lg text-gray-900 font-medium title-font mb-4">{{ article.title }}</h2>
-                      <p class="leading-relaxed text-base">{{ article.description }}</p>  
+                  <LinkCard :article="article">
+                    <div class="p-3 mt-3 border-t-2 w-full pt-4">
+                      <button @click="deleteArticle(article.id)" class="text-gray-100 bg-red-400 hover:bg-red-600 p-1 rounded w-full">削除</button>
                     </div>
-                    <div class="p-3 mt-3">
-                      <div class="text-right mb-3">
-                        <a :href="article.url" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-600 hover:underline">リンク先を表示→</a>
-                      </div>
-                      <div class="border-t-2 w-full pt-4">
-                        <button @click="deleteArticle(article.id)" class="text-gray-100 bg-red-400 hover:bg-red-600 p-1 rounded w-full">削除</button>
-                      </div>
-                    </div>
-                  </div>
+                  </LinkCard>
                 </div>
               </div>
               <div v-else class="my-16 text-center text-lg">

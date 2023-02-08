@@ -36,11 +36,11 @@ class ArticleController extends Controller
             }
             $article->posts()->sync($post->id);
             DB::commit();
-            return to_route('post.show', $post->id)
+            return to_route('post.edit', $post->id)
             ->with('flash', [
                 'status' => 'success',
                 'message' => '記事を追加しました。',
-            ]);;
+            ]);
         }catch(\Exception $e) {
             DB::rollBack();
             return back()
@@ -72,7 +72,7 @@ class ArticleController extends Controller
             return false;
         }
 
-        return to_route('post.show', $post->id)->with('flash', [
+        return to_route('post.edit', $post->id)->with('flash', [
                 'status' => 'error',
                 'message' => '記事を削除しました。',
             ]);
