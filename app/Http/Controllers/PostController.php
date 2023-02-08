@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\PostDetailResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class PostController extends Controller
             ->get();
         
         return Inertia::render('Post/Index', [
-            'posts' => $posts
+            'posts' => PostResource::collection($posts)
         ]);
     }
 
@@ -61,9 +62,8 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post = $post->load('articles');
-        $post['isLiked'] = $post->isLiked(Auth::user());
         return Inertia::render('Post/Show', [
-            'post' => $post,
+            'post' => new PostDetailResource($post),
         ]);
     }
 
@@ -75,7 +75,7 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         return Inertia::render('Post/Edit', [
-            'post' => $post->load('articles'),
+            'post' => new PostDetailResource($post->load('articles')),
         ]);
     }
 

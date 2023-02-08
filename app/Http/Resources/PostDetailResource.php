@@ -3,8 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
-class PostResource extends JsonResource
+class PostDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +19,9 @@ class PostResource extends JsonResource
             'id' => $this->id,
             'user' => new UserResource($this->user),
             'title' => $this->title,
-            'updated_at' => $this->updated_at,
+            'description' => $this->description,
+            'articles' => $this->articles,
+            'isLiked' => $this->isLiked(Auth::user())
         ];
     }
 }
