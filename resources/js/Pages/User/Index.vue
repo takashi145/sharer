@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { defineProps, onMounted, ref } from 'vue';
 import TimeDiff from '@/utils/time-diff';
+import LinkCard from '@/Components/LinkCard.vue';
 
 const props = defineProps({
   articles: Array,
@@ -53,7 +54,7 @@ const deleteArticle = article_id => {
                         <Link
                           :href="route('user.index', user.id)"
                           :data="{type: 'mine'}" 
-                          :only="['posts', 'type']"
+                          :only="['articles', 'type']"
                           :class="[type !== 'favorite' ? 'text-blue-600 bg-slate-300 cursor-default' : 'hover:bg-gray-200 cursor-pointer']"
                           class="inline-block p-4 rounded-t-lg "
                         > 
@@ -64,7 +65,7 @@ const deleteArticle = article_id => {
                       <Link
                         :href="route('user.index', user.id)"
                         :data="{type: 'favorite'}"
-                        :only="['posts', 'type']"
+                        :only="['articles', 'type']"
                         :class="[type === 'favorite' ? 'text-blue-600 bg-slate-300 cursor-default' : 'hover:bg-gray-200 cursor-pointer']"
                         class="inline-block p-4 rounded-t-lg "
                       > 
@@ -83,37 +84,23 @@ const deleteArticle = article_id => {
                     </li>
                 </ul>
 
-
-
                 <div v-if="articles && articles.length >= 1" class="container px-5 mx-auto flex flex-wrap">
                   <div class="flex flex-wrap mx-auto w-full">
                     <div
                       v-for="article in articles" 
                       :key="article.id" 
-                      class="p-4 w-full"
-                      :class="[articles.length <= 1 ? 'lg:w-full' : 'lg:w-1/2']"
+                      class="p-4 w-full md:w-1/2 lg:w-1/3"
                     >
-                      <div class="shadow-lg flex border-2 rounded-lg border-gray-200 border-opacity-50 p-3 flex-row">
-                        <div class="mb-4 space-y-2">
-                          
-                          <Link :href="route('post.show', article.id)" class="hover:scale-110 hover:ring-2 w-16 h-16 sm:mr-8 sm:mb-0 mb-4 flex items-center justify-center bg-indigo-100 text-indigo-500 flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                            </svg>
-                          </Link>
-
-                          <div class="">
-                            いいね数：　{{ article.like_count }}
-                          </div>
-                          
+                      <div class="shadow-lg flex flex-col border-2 rounded-lg border-gray-200 border-opacity-50 p-3">
+                        <div class="mb-4 w-full">
+                          <LinkCard :article="article" class="h-full" />
                         </div>
                         
-                        <div class="flex-grow space-y-2 mt-8">
-                          <h2 class="text-gray-900 text-xl title-font font-medium">{{ article.title }}</h2>
+                        <div class="m-3">
                           <p class="text-end">更新日：{{ TimeDiff(article.updated_at) }}</p>
                       
                           <div v-if="$page.props.auth.user.id === user.id" class="flex justify-end space-x-3">
-                            <Link :href="route('post.edit', article.id)" class="text-indigo-400 hover:text-indigo-500 hover:underline">編集</Link>
+                            <Link :href="route('articles.edit', article.id)" class="text-indigo-400 hover:text-indigo-500 hover:underline">編集</Link>
                             <button
                               @click="deleteArticle(article.id)"
                               class="text-red-400 hover:text-red-500 hover:underline"

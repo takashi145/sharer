@@ -22,6 +22,18 @@ class Article extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function is_liked($user)
+    {
+        return $user
+            ? (bool) $this->users()->where('user_id', $user->id)->count()
+            : false;
+    }
+
     public function getTitleAttribute($value)
     {
         if(empty($value)) {

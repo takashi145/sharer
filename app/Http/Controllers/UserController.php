@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -23,20 +23,16 @@ class UserController extends Controller
         if($type === 'favorite') {
             $articles = $user
                 ->like()
-                 // ログインユーザーではない場合は公開された投稿のみ取得
-                // ->when(Auth::id() !== $user->id, function ($query) {
-                //     $query->searchPublished();
-                // })
                 ->get();
         }else {
             $articles = $user
+                ->load('like')
                 ->articles()
-                ->with('like')
                 ->get();
         }
 
         return Inertia::render('User/Index', [
-            'articles' => $articles,
+            'articles' => ArticleResource::collection($articles),
             'user' => new UserResource($user),
             'type' => $type
         ]);

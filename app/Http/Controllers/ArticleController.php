@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -20,16 +21,8 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
         return Inertia::render('Article/Index', [
-            'articles' => $articles,
+            'articles' => ArticleResource::collection($articles),
         ]);
-    }
-
-    /**
-     * 記事作成画面を表示
-     */
-    public function create()
-    {
-        return Inertia::render('Article/Create');
     }
 
      /**
@@ -74,6 +67,20 @@ class ArticleController extends Controller
     }
 
     /**
+     * 記事の更新
+     */
+    public function update(Request $request, Article $article)
+    {
+        $article->url = $request->url;
+        $article->save();
+
+        return to_route(back())->with('flash', [
+            'status' => 'success',
+            'message' => '更新しました。'
+        ]);
+    }
+
+    /**
      * 記事を削除
      * 
      * @param App\Models\Article $article
@@ -82,7 +89,7 @@ class ArticleController extends Controller
     {
         $article->delete();
 
-        return to_route('article.index')->with('flash', [
+        return to_route(back())->with('flash', [
                 'status' => 'error',
                 'message' => '記事を削除しました。',
             ]);

@@ -15,8 +15,9 @@ class LikeController extends Controller
      */
     public function like(Article $article)
     {
-        $article->like()->sync(Auth::id());
-        return Redirect::back();
+        $article->users()->detach(Auth::id());
+        $article->users()->attach(Auth::id());
+        return response()->noContent();
     }
 
     /**
@@ -25,6 +26,6 @@ class LikeController extends Controller
     public function unlike(Article $article)
     {
         Auth::user()->like()->detach($article->id);
-        return Redirect::back();
+        return response()->noContent();
     }
 }
