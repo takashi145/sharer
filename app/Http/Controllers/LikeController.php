@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,18 +13,18 @@ class LikeController extends Controller
     /**
      * 投稿をお気に入り登録する
      */
-    public function like(Post $post)
+    public function like(Article $article)
     {
-        $post->like()->sync(Auth::id());
+        $article->like()->sync(Auth::id());
         return Redirect::back();
     }
 
     /**
      * お気に入り登録を解除する
      */
-    public function unlike(Post $post)
+    public function unlike(Article $article)
     {
-        Auth::user()->like()->detach($post->id);
+        Auth::user()->like()->detach($article->id);
         return Redirect::back();
     }
 }

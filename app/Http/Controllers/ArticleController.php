@@ -6,23 +6,45 @@ use App\Http\Requests\StoreArticleRequest;
 use App\Models\Article;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class ArticleController extends Controller
 {
+
+    /**
+     * 記事一覧を表示
+     */
+    public function index()
+    {
+        $articles = Article::all();
+        return Inertia::render('Article/Index', [
+            'articles' => $articles,
+        ]);
+    }
+
+    /**
+     * 記事作成画面を表示
+     */
+    public function create()
+    {
+        return Inertia::render('Article/Create');
+    }
+
      /**
      * 記事の保存
      * 
      * @param App\Http\Requests\StoreArticleRequest $request
      * @param App\Models\Post $post
      */
-    public function store(StoreArticleRequest $request, Post $post)
+    public function store(StoreArticleRequest $request)
     {
         DB::beginTransaction();
         try {
             $article = null;
             $article = Article::FirstOrNew([
+                'user_id' => Auth::id(),
                 'url' => $request->input('url')
             ]);
             $isExists = $article->exists();
@@ -34,9 +56,9 @@ class ArticleController extends Controller
                     $article->save();
                 }
             }
-            $article->posts()->sync($post->id);
+            
             DB::commit();
-            return to_route('post.edit', $post->id)
+            return to_route('articles.index')
             ->with('flash', [
                 'status' => 'success',
                 'message' => '記事を追加しました。',
@@ -52,27 +74,15 @@ class ArticleController extends Controller
     }
 
     /**
-     * 指定された投稿(post)と記事(article)の紐づけを削除
+     * 記事を削除
      * 
-     * @param App\Models\Post $post
      * @param App\Models\Article $article
      */
-    public function destroy(Post $post, Article $article)
+    public function destroy(Article $article)
     {
-        DB::beginTransaction();
-        try {
-            $article->posts()->detach($post->id);
-            if(count($post->articles) === 0) {
-                $post->published = false;
-                $post->save();
-            }
-            DB::commit();
-        }catch(\Exception $e) {
-            DB::rollBack();
-            return false;
-        }
+        $article->delete();
 
-        return to_route('post.edit', $post->id)->with('flash', [
+        return to_route('article.index')->with('flash', [
                 'status' => 'error',
                 'message' => '記事を削除しました。',
             ]);

@@ -18,28 +18,25 @@ class UserController extends Controller
     {
         $type = $request->query('type');
 
-        $posts = null;
+        $articles = null;
         
         if($type === 'favorite') {
-            $posts = $user
+            $articles = $user
                 ->like()
                  // ログインユーザーではない場合は公開された投稿のみ取得
-                ->when(Auth::id() !== $user->id, function ($query) {
-                    $query->searchPublished();
-                })
+                // ->when(Auth::id() !== $user->id, function ($query) {
+                //     $query->searchPublished();
+                // })
                 ->get();
         }else {
-            $posts = $user
-                ->posts()
+            $articles = $user
+                ->articles()
                 ->with('like')
-                ->when(Auth::id() !== $user->id, function ($query) {
-                    $query->searchPublished();
-                })
                 ->get();
         }
 
         return Inertia::render('User/Index', [
-            'posts' => PostResource::collection($posts),
+            'articles' => $articles,
             'user' => new UserResource($user),
             'type' => $type
         ]);

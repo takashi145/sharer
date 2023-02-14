@@ -22,7 +22,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('post.index')" class="">
+                                <Link :href="route('articles.index')" class="">
                                     <ApplicationLogo
                                         class="mt-2 block h-12 w-auto fill-current text-gray-800"
                                     />
@@ -31,7 +31,7 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('post.index')" :active="route().current('post.index')">
+                                <NavLink :href="route('articles.index')" :active="route().current('articles.index')">
                                     ホーム
                                 </NavLink>
                             </div>
@@ -114,7 +114,7 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('post.index')" :active="route().current('post.index')">
+                        <ResponsiveNavLink :href="route('articles.index')" :active="route().current('articles.index')">
                             ホーム
                         </ResponsiveNavLink>
                     </div>

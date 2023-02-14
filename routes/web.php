@@ -37,13 +37,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function() {
-    Route::resource('post', PostController::class)->except('create');
+    Route::resource('articles', ArticleController::class);
 
-    Route::post('/post/{post}/articles', [ArticleController::class, 'store'])->name('article.create');
-    Route::post('/post/{post}/articles/{article}', [ArticleController::class, 'destroy'])->name('article.delete');
-
-    Route::put('/post/{post}/like', [LikeController::class, 'like'])->name('post.like');
-    Route::delete('/post/{post}/like', [LikeController::class, 'unlike'])->name('post.unlike');
+    Route::put('/articles/{article}/like', [LikeController::class, 'like'])->name('article.like');
+    Route::delete('/articles/{article}/like', [LikeController::class, 'unlike'])->name('article.unlike');
 
     Route::get('/users/{user}', [UserController::class, 'index'])->name('user.index');
 });
