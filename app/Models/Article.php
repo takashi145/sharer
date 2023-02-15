@@ -27,6 +27,11 @@ class Article extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
     public function is_liked($user)
     {
         return $user

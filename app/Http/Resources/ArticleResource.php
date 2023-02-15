@@ -23,6 +23,8 @@ class ArticleResource extends JsonResource
             'thumbnail_url' => $this->thumbnail_url,
             'is_liked' => $this->is_liked(Auth::user()),
             'updated_at' => $this->updated_at,
+            'user' => new UserResource($this->user),
+            'tags' => $this->tags,
         ];
     }
 }

@@ -1,19 +1,38 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { defineProps, onMounted, ref } from 'vue';
 import TimeDiff from '@/utils/time-diff';
 import LinkCard from '@/Components/LinkCard.vue';
+import Modal from '@/Components/Modal.vue';
 
 const props = defineProps({
   articles: Array,
   user: Object,
-  type: String
+  type: String,
+  errors: Object
+})
+
+const show = ref(false);
+
+const article_id = ref(null);
+
+const form = useForm({
+  url: ''
 })
 
 const deleteArticle = article_id => {
   router.delete(`/articles/${article_id}`, {
     onBefore: () => confirm('本当に削除してもよろしいですか？')
+  });
+}
+
+const update = () => {
+  form.put(route('articles.update', article_id.value), {
+    onSuccess: () => { 
+      form.reset('url');  
+      show.value = false;
+    },
   });
 }
 </script>
@@ -49,7 +68,7 @@ const deleteArticle = article_id => {
 
               <div class="text-gray-600 body-font">
                 
-                <ul v-if="$page.props.auth.user.id === user.id" class="mt-8 mx-auto px-5 flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+                <ul v-if="$page.props.auth.user.id === user.id" class="mt-8 mx-auto px-5 flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-300">
                     <li class="mr-2">
                         <Link
                           :href="route('user.index', user.id)"
@@ -84,33 +103,49 @@ const deleteArticle = article_id => {
                     </li>
                 </ul>
 
-                <div v-if="articles && articles.length >= 1" class="container px-5 mx-auto flex flex-wrap">
+                <div v-if="articles && articles.length >= 1" class="container mx-auto flex flex-wrap">
                   <div class="flex flex-wrap mx-auto w-full">
                     <div
                       v-for="article in articles" 
                       :key="article.id" 
                       class="p-4 w-full md:w-1/2 lg:w-1/3"
                     >
-                      <div class="shadow-lg flex flex-col border-2 rounded-lg border-gray-200 border-opacity-50 p-3">
-                        <div class="mb-4 w-full">
-                          <LinkCard :article="article" class="h-full" />
-                        </div>
-                        
-                        <div class="m-3">
-                          <p class="text-end">更新日：{{ TimeDiff(article.updated_at) }}</p>
-                      
+                      <LinkCard :article="article">
+                        <div class="m-1 border-t pt-3">
                           <div v-if="$page.props.auth.user.id === user.id" class="flex justify-end space-x-3">
-                            <Link :href="route('articles.edit', article.id)" class="text-indigo-400 hover:text-indigo-500 hover:underline">編集</Link>
                             <button
                               @click="deleteArticle(article.id)"
-                              class="text-red-400 hover:text-red-500 hover:underline"
+                              class="text-white bg-red-400 hover:bg-red-500 py-2 rounded hover:underline w-full"
                             >
                               削除
                             </button>
                           </div>
                         </div>
-                      </div>
+                      </LinkCard>
+                     
                     </div>
+
+                    <Modal :show="show" @close="show = false">
+                      <div class="text-xl m-3 border-b">
+                        記事のリンクを追加
+                      </div>
+                      <form @submit.prevent="update" class=" bg-white m-6 space-y-5">
+                        <div class="">
+                          <div class="flex">
+                            <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md ">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                              </svg>
+                            </span>
+                            <input type="text" v-model="form.url" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5" placeholder="URLを入力してください。">  
+                          </div>
+                          <InputError :message="errors.url"  />
+                        </div>
+                        <div class="text-end">
+                          <button type="submit" class="text-white bg-indigo-400 hover:bg-indigo-600 w-full py-2 rounded">Add Link</button>
+                        </div>
+                      </form>
+                    </Modal>
                   </div>
                 </div>
 

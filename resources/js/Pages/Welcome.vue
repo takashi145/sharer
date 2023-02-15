@@ -18,7 +18,7 @@ defineProps({
         <div v-if="canLogin" class="z-10 hidden fixed top-0 right-0 px-6 py-4 sm:block">
             <Link
                 v-if="$page.props.auth.user"
-                :href="route('post.index')"
+                :href="route('articles.index')"
                 class="text-sm text-gray-700 underline"
                 >ホーム</Link
             >

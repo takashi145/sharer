@@ -24,7 +24,8 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => ['required', 'active_url']
+            'url' => ['required', 'active_url'],
+            'tags' => ['nullable'],
         ];
     }
 }
