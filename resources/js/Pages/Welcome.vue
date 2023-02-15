@@ -39,7 +39,7 @@ defineProps({
             <div class="h-full flex justify-center items-center flex-col">
                 <img src="/images/logo.png" alt="">
                 <h3 class="text-xl md:text-3xl text-gray-700">
-                    役立つ記事、面白い記事をみんなで共有しよう！！
+                    役立つ記事、面白い記事をみんなに共有しよう！！
                 </h3>
             </div>
         </div>

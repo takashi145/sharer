@@ -24,11 +24,22 @@ class ArticleController extends Controller
     /**
      * 記事一覧を表示
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::all();
+        $tag_name = $request->query('tag');
+        $tag = null;
+        if($tag_name) {
+            $tag = Tag::where('name', $tag_name)->first();
+        }
+        if($tag) {
+            $articles = $tag->articles()->orderBy('id', 'desc')->get();
+        }else {
+            $articles = Article::orderBy('id', 'desc')->get();
+        }
+
         return Inertia::render('Article/Index', [
             'articles' => ArticleResource::collection($articles),
+            'tag_name' => $tag ? $tag->name : null,
         ]);
     }
 
