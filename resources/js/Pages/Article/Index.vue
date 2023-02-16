@@ -66,7 +66,7 @@ const deleteTag = name => {
 
     <div class="pt-12 pb-24">
       <div class="w-full md:w-2/3 mx-auto mb-8">
-        <SearchInput :keyword="keyword" />
+        <SearchInput :keyword="keyword" class="mx-8" />
       </div>
 
       <div v-if="tag_name" class="flex mx-8 items-center">

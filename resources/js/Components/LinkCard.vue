@@ -13,7 +13,7 @@ defineProps({
         <p>共有者：<Link :href="route('user.index', article.user.id)" class="text-lg text-gray-600 hover:text-gray-800 underline hover:cursor-pointer">{{ article.user.name }}</Link></p>
         <slot />
     </div>
-    <div class="bg-gray-100 p-1 rounded hover:ring-2 hover:-rotate-3 hover:scale-110">
+    <div class="bg-gray-100 p-1 rounded hover:ring-2 md:hover:-rotate-3 md:hover:scale-110">
       <a :href="article.url" class="" target="_blank" rel="noopener noreferrer" >
         <img class="h-80 md:h-48 hover:cursor-pointer rounded w-full object-cover object-center mb-6 border hover:opacity-80" :src="article.thumbnail_url" alt="content">
       </a>
