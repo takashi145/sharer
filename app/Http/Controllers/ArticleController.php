@@ -36,14 +36,15 @@ class ArticleController extends Controller
         }
         
         if($tag) {
-            $articles = $tag->articles()->searchKeyword($keyword)->orderBy('id', 'desc')->get();
+            $articles = $tag->articles()->searchKeyword($keyword)->orderBy('id', 'desc')->paginate(30);
         }else {
-            $articles = Article::searchKeyword($keyword)->orderBy('id', 'desc')->get();
+            $articles = Article::searchKeyword($keyword)->orderBy('id', 'desc')->paginate(30);
         }
 
         return Inertia::render('Article/Index', [
             'articles' => ArticleResource::collection($articles),
             'tag_name' => $tag ? $tag->name : null,
+            'keyword' => $keyword,
         ]);
     }
 
@@ -57,49 +58,42 @@ class ArticleController extends Controller
     {
         DB::beginTransaction();
         try {
-            $article = null;
-            $article = Article::firstOrNew([
-                'user_id' => Auth::id(),
-                'url' => $request->input('url')
-            ]);
-            $isExists = $article->exists;
+            $article = new Article();
+            $article->user_id = Auth::id();
+            $article->url = $request->input('url');
 
-            $dt_ago = now()->subMonth();
-
-            if(!$isExists || ($isExists && $article->updated_at < $dt_ago)) {
-                if($article->setAttributes($request->input('url'))){
-                    $article->updated_at = now();
-                    $article->save();
-                }
+            if($article->setAttributes($request->input('url'))){
+                $article->updated_at = now();
+                $article->save();
             }
 
-            if(!$isExists) {
-                $tags = array_unique($request->input('tags'));
-                foreach($tags as $key => $tag_name) {
-                    if($key >= 5) {
-                        break;
-                    }
-                    $tag = Tag::firstOrCreate([
-                        'name' => $tag_name
-                    ]);
-
-                    $article->tags()->attach($tag->id);
+            $tags = array_unique($request->input('tags'));
+            foreach($tags as $key => $tag_name) {
+                if($key >= 5) {
+                    break;
                 }
+                $tag = Tag::firstOrCreate([
+                    'name' => $tag_name
+                ]);
+
+                $article->tags()->attach($tag->id);
             }
             
             DB::commit();
+
             return to_route('articles.index')
-            ->with('flash', [
-                'status' => 'success',
-                'message' => '記事を追加しました。',
-            ]);
+                ->with('flash', [
+                    'status' => 'success',
+                    'message' => '記事を追加しました。',
+                ]);
         }catch(\Exception $e) {
             DB::rollBack();
+
             return back()
-            ->with('flash', [
-                'status' => 'error',
-                'message' => 'リンクの追加に失敗しました。'
-            ]);
+                ->with('flash', [
+                    'status' => 'error',
+                    'message' => 'リンクの追加に失敗しました。'
+                ]);
         }
     }
 

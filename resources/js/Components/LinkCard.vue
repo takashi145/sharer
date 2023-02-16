@@ -9,7 +9,10 @@ defineProps({
 </script>
 <template>
   <div class="block bg-slate-200 rounded-lg p-1 shadow-lg">
-    <p class="m-2">共有者：<Link :href="route('user.index', article.user.id)" class="text-lg text-gray-600 hover:text-gray-800 underline hover:cursor-pointer">{{ article.user.name }}</Link></p>
+    <div class="m-2 flex items-center justify-between">
+        <p>共有者：<Link :href="route('user.index', article.user.id)" class="text-lg text-gray-600 hover:text-gray-800 underline hover:cursor-pointer">{{ article.user.name }}</Link></p>
+        <slot />
+    </div>
     <div class="bg-gray-100 p-1 rounded hover:ring-2 hover:-rotate-3 hover:scale-110">
       <a :href="article.url" class="" target="_blank" rel="noopener noreferrer" >
         <img class="h-80 md:h-48 hover:cursor-pointer rounded w-full object-cover object-center mb-6 border hover:opacity-80" :src="article.thumbnail_url" alt="content">
@@ -20,7 +23,7 @@ defineProps({
       </div>
     </div>
     
-    <div class="flex justify-between my-3">
+    <div class="flex justify-between mt-3">
       <ul class="flex flex-wrap">
         <li v-for="tag in article.tags" :key="tag.id" class="flex items-center p-1 bg-gray-300 rounded text-sm mx-1 mb-2">
           <Link :href="`/articles?tag=${tag.name}`" class="flex">
@@ -30,7 +33,6 @@ defineProps({
             </svg>
             {{ tag.name }}
           </Link>
-          
         </li>
       </ul>
       <Like 
@@ -39,8 +41,6 @@ defineProps({
         class="mx-3"
       />  
     </div>
-    
-    <slot /> 
   </div>
   
 </template>

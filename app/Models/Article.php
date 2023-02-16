@@ -17,6 +17,12 @@ class Article extends Model
         'thumbnail_url',
     ];
 
+    protected $with = [
+        'user',
+        'users',
+        'tags'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,7 +41,7 @@ class Article extends Model
     public function is_liked($user)
     {
         return $user
-            ? (bool) $this->users()->where('user_id', $user->id)->count()
+            ? (bool) $this->users->where('user_id', $user->id)->count()
             : false;
     }
 
@@ -47,7 +53,7 @@ class Article extends Model
     
         return $query
             ->where('title', 'like', "%".$keyword."%")
-            ->where('description', 'like', "%".$keyword."%");
+            ->orWhere('description', 'like', "%".$keyword."%");
     }
 
     public function getTitleAttribute($value)

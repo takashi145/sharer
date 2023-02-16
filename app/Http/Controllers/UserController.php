@@ -23,12 +23,11 @@ class UserController extends Controller
         if($type === 'favorite') {
             $articles = $user
                 ->like()
-                ->get();
+                ->paginate(30);
         }else {
             $articles = $user
-                ->load('like')
                 ->articles()
-                ->get();
+                ->paginate(30);
         }
 
         return Inertia::render('User/Index', [

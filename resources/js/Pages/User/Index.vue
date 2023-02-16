@@ -5,6 +5,7 @@ import { defineProps, onMounted, ref } from 'vue';
 import TimeDiff from '@/utils/time-diff';
 import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
+import Paginate from '@/Components/Pagination.vue';
 
 const props = defineProps({
   articles: Array,
@@ -71,8 +72,7 @@ const update = () => {
                 <ul v-if="$page.props.auth.user.id === user.id" class="mt-8 mx-auto px-5 flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-300">
                     <li class="mr-2">
                         <Link
-                          :href="route('user.index', user.id)"
-                          :data="{type: 'mine'}" 
+                          :href="route('user.index', user.id)" 
                           :only="['articles', 'type']"
                           :class="[type !== 'favorite' ? 'text-blue-600 bg-slate-300 cursor-default' : 'hover:bg-gray-200 cursor-pointer']"
                           class="inline-block p-4 rounded-t-lg "
@@ -103,26 +103,23 @@ const update = () => {
                     </li>
                 </ul>
 
-                <div v-if="articles && articles.length >= 1" class="container mx-auto flex flex-wrap">
+                <div v-if="articles && articles.data.length >= 1" class="container mx-auto flex flex-wrap">
                   <div class="flex flex-wrap mx-auto w-full">
                     <div
-                      v-for="article in articles" 
+                      v-for="article in articles.data" 
                       :key="article.id" 
                       class="p-4 w-full md:w-1/2 lg:w-1/3"
                     >
                       <LinkCard :article="article">
-                        <div class="m-1 border-t pt-3">
-                          <div v-if="$page.props.auth.user.id === user.id" class="flex justify-end space-x-3">
-                            <button
-                              @click="deleteArticle(article.id)"
-                              class="text-white bg-red-400 hover:bg-red-500 py-2 rounded hover:underline w-full"
-                            >
-                              削除
-                            </button>
-                          </div>
+                        <div v-if="$page.props.auth.user.id === user.id" class="flex justify-end space-x-3">
+                          <button
+                            @click="deleteArticle(article.id)"
+                            class="text-sm text-red-400 hover:text-red-600 hover:underline"
+                          >
+                            削除
+                          </button>
                         </div>
                       </LinkCard>
-                     
                     </div>
 
                     <Modal :show="show" @close="show = false">
@@ -152,6 +149,9 @@ const update = () => {
                 <div v-else class="text-gray-600 text-3xl flex justify-center mt-48">
                   投稿が有りません
                 </div>
+              </div>
+              <div class="mt-8 flex justify-center">
+                <Paginate :links="articles.meta.links" />
               </div>
             </div>
         </div>

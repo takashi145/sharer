@@ -6,11 +6,13 @@ import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
 import InputError from '@/Components/InputError.vue';
 import SearchInput from '@/Components/SearchInput.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 defineProps({
   articles: Array,
   errors: Object,
   tag_name: Object,
+  keyword: String,
 })
 
 const form = useForm({
@@ -64,7 +66,7 @@ const deleteTag = name => {
 
     <div class="pt-12 pb-24">
       <div class="w-full md:w-2/3 mx-auto mb-8">
-        <SearchInput />
+        <SearchInput :keyword="keyword" />
       </div>
 
       <div v-if="tag_name" class="flex mx-8 items-center">
@@ -81,21 +83,22 @@ const deleteTag = name => {
           </svg>
         </Link>
       </div>
-
-      <div v-else class="mx-8 text-xl underline">
-        すべての投稿
-      </div>
-      
-      
       <div class="max-w-8xl mx-auto sm:px-4 lg:px-8">
-        <ul class="flex flex-wrap">
-          <li v-for="article in articles" :key="article.id" class="w-full md:w-1/2 lg:w-1/3 px-3 my-8">
+        <ul v-if="articles.data.length >= 1" class="flex flex-wrap">
+          <li v-for="article in articles.data" :key="article.id" class="w-full md:w-1/2 lg:w-1/3 px-3 my-8">
             <LinkCard :article="article" class="lg:mx-3" />
           </li>
         </ul>
+        <div v-else class="text-2xl text-gray-700 flex justify-center mt-24">
+          記事がありません。
+        </div>
+        <div class="flex justify-center mt-8">
+            <Pagination :links="articles.meta.links" />
+          </div>
       </div>
     </div>
 
+    <!--記事作成モーダル-->
     <Modal :show="show" @close="show = false">
       <div class="text-xl m-3 border-b">
         記事を共有
@@ -156,12 +159,12 @@ const deleteTag = name => {
         </div>
       </form>
     </Modal>
-
     <button @click="show = true; errors = {}" class="animate-bounce fixed bottom-6 right-6 p-6 bg-blue-400 hover:bg-blue-600 text-gray-100 focus:ring-4 rounded-full">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
       </svg>
     </button>
+    <!---->
 
   </AuthenticatedLayout>
 </template>
