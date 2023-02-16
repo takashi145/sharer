@@ -26,15 +26,19 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
+        $keyword = $request->query('keyword');
         $tag_name = $request->query('tag');
+
         $tag = null;
+
         if($tag_name) {
             $tag = Tag::where('name', $tag_name)->first();
         }
+        
         if($tag) {
-            $articles = $tag->articles()->orderBy('id', 'desc')->get();
+            $articles = $tag->articles()->searchKeyword($keyword)->orderBy('id', 'desc')->get();
         }else {
-            $articles = Article::orderBy('id', 'desc')->get();
+            $articles = Article::searchKeyword($keyword)->orderBy('id', 'desc')->get();
         }
 
         return Inertia::render('Article/Index', [

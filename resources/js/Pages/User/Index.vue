@@ -77,7 +77,7 @@ const update = () => {
                           :class="[type !== 'favorite' ? 'text-blue-600 bg-slate-300 cursor-default' : 'hover:bg-gray-200 cursor-pointer']"
                           class="inline-block p-4 rounded-t-lg "
                         > 
-                          自分の投稿
+                          投稿
                         </Link>
                     </li>
                     <li class="mr-2">

@@ -1,10 +1,11 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { defineProps, ref } from 'vue';
 import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
 import InputError from '@/Components/InputError.vue';
+import SearchInput from '@/Components/SearchInput.vue';
 
 defineProps({
   articles: Array,
@@ -62,6 +63,10 @@ const deleteTag = name => {
     </template>
 
     <div class="pt-12 pb-24">
+      <div class="w-full md:w-2/3 mx-auto mb-8">
+        <SearchInput />
+      </div>
+
       <div v-if="tag_name" class="flex mx-8 items-center">
         <h2 class="underline text-xl flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">

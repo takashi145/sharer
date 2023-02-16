@@ -39,6 +39,17 @@ class Article extends Model
             : false;
     }
 
+    public function scopeSearchKeyword($query, $keyword)
+    {
+        if(empty($keyword)) {
+            return $query;
+        }
+    
+        return $query
+            ->where('title', 'like', "%".$keyword."%")
+            ->where('description', 'like', "%".$keyword."%");
+    }
+
     public function getTitleAttribute($value)
     {
         if(empty($value)) {
