@@ -41,7 +41,7 @@ class Article extends Model
     public function is_liked($user)
     {
         return $user
-            ? (bool) $this->users->where('user_id', $user->id)->count()
+            ? (bool) $this->users->where('id', $user->id)->count()
             : false;
     }
 

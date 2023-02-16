@@ -85,8 +85,8 @@ const deleteTag = name => {
       </div>
       <div class="max-w-8xl mx-auto sm:px-4 lg:px-8">
         <ul v-if="articles.data.length >= 1" class="flex flex-wrap">
-          <li v-for="article in articles.data" :key="article.id" class="w-full md:w-1/2 lg:w-1/3 px-3 my-8">
-            <LinkCard :article="article" class="lg:mx-3" />
+          <li v-for="article in articles.data" :key="article.id" class="w-full sm:w-1/2 lg:w-1/3 px-3 my-8">
+            <LinkCard :article="article" class="m-3" />
           </li>
         </ul>
         <div v-else class="text-2xl text-gray-700 flex justify-center mt-24">
