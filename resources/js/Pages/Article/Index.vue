@@ -100,7 +100,7 @@ const deleteTag = name => {
     </div>
 
     <!--記事作成モーダル-->
-    <Modal :show="show" @close="show = false">
+    <Modal :show="show" @close="show = false; form.reset();">
       <div class="text-xl m-3 border-b">
         記事を共有
       </div>
