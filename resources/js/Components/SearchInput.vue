@@ -17,7 +17,6 @@ const keyword = ref(props.keyword);
                 :href="route('articles.index')" 
                 :data="{ keyword }"
                 as="button"
-                :disabled="!keyword"
                 class="absolute top-0 right-0 p-3 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">

@@ -45,7 +45,7 @@ defineProps({
         </div>
         
         <div class="w-full h-1/2 flex items-center justify-center bg-white">
-            <Link :href="[(canLogin && $page.props.auth.user) ? route('post.index') : route('login')]">
+            <Link :href="[(canLogin && $page.props.auth.user) ? route('articles.index') : route('login')]">
                 <button class="text-2xl text-gray-100 font-semibold bg-slate-400 hover:bg-slate-500 px-5 py-3 rounded">
                     始める→
                 </button>

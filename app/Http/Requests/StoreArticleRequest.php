@@ -24,8 +24,16 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
+            'title2' => ['required', 'max:30'],
             'url' => ['required', 'active_url'],
             'tags' => ['nullable'],
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'title2' => 'タイトル',
         ];
     }
 }

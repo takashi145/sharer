@@ -15,6 +15,7 @@ class Article extends Model
         'title',
         'description',
         'thumbnail_url',
+        'title2',
     ];
 
     protected $with = [

@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('article_tag', function (Blueprint $table) {
             $table->foreignId('article_id')
             ->constrained()
-            ->cascadeOnUpdate();
+            ->cascadeOnDelete();
             $table->foreignId('tag_id')
             ->constrained()
-            ->cascadeOnUpdate();
+            ->cascadeOnDelete();
         });
     }
 

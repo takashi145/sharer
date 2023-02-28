@@ -16,6 +16,7 @@ defineProps({
 })
 
 const form = useForm({
+  title2: '',
   url: '',
   tags: [],
 })
@@ -29,7 +30,7 @@ const tag = ref('');
 const submit = () => {
   form.post(route('articles.store'), {
     onSuccess: () => {
-      form.reset('url');
+      form.reset();
       show.value = false;
     },
   })
@@ -64,7 +65,7 @@ const deleteTag = name => {
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">UserPage</h2>
     </template>
 
-    <div class="pt-12 pb-24">
+    <div class="pt-8 pb-24">
       <div class="w-full md:w-2/3 mx-auto mb-8">
         <SearchInput :keyword="keyword" class="mx-8" />
       </div>
@@ -85,11 +86,11 @@ const deleteTag = name => {
       </div>
       <div class="max-w-8xl mx-auto sm:px-4 lg:px-8">
         <ul v-if="articles.data.length >= 1" class="flex flex-wrap">
-          <li v-for="article in articles.data" :key="article.id" class="w-full sm:w-1/2 lg:w-1/3 px-3 my-8">
-            <LinkCard :article="article" class="m-3" />
+          <li v-for="article in articles.data" :key="article.id" class="w-full sm:w-1/2 lg:w-1/3 px-3 my-4">
+            <LinkCard :article="article" class="mx-4 sm:m-0" />
           </li>
         </ul>
-        <div v-else class="text-2xl text-gray-700 flex justify-center mt-24">
+        <div v-else class="text-xl text-gray-700 flex justify-center mt-24">
           記事がありません。
         </div>
         <div class="flex justify-center mt-8">
@@ -105,6 +106,18 @@ const deleteTag = name => {
       </div>
       <form class=" bg-white m-6 space-y-5">
         <div class="space-y-4">
+          <div>
+            <label for="">Title</label>
+            <div class="flex mb-1">
+              <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                </svg>
+              </span>
+              <input type="text" v-model="form.title2" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5" placeholder="タイトルを入力してください。">    
+            </div>
+            <InputError :message="errors.title2"  />
+          </div>
           <div>
             <label for="">URL</label>
             <div class="flex mb-1">
@@ -151,15 +164,16 @@ const deleteTag = name => {
           <button 
             type="button" 
             @click="submit" 
-            :disabled="!form.url"
-            class="text-white bg-indigo-400 hover:bg-indigo-600 w-full py-2 rounded"
+            :disabled="!form.url || !form.title2"
+            :class="[!form.url || !form.title2 ? 'bg-gray-400' : 'bg-indigo-400 hover:bg-indigo-600']"
+            class="text-white w-full py-2 rounded"
           >
             Submit
           </button>
         </div>
       </form>
     </Modal>
-    <button @click="show = true; errors = {}" class="animate-bounce fixed bottom-6 right-6 p-6 bg-blue-400 hover:bg-blue-600 text-gray-100 focus:ring-4 rounded-full">
+    <button @click="show = true; errors = {}" class="animate-bounce fixed bottom-6 right-6 p-4 bg-blue-400 hover:bg-blue-600 text-gray-100 focus:ring-4 rounded-full">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
       </svg>

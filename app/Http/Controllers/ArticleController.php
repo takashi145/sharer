@@ -60,6 +60,7 @@ class ArticleController extends Controller
         try {
             $article = new Article();
             $article->user_id = Auth::id();
+            $article->title2 = $request->input('title2');
             $article->url = $request->input('url');
 
             if($article->setAttributes($request->input('url'))){
@@ -104,6 +105,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+
         $article->delete();
 
         return Redirect::back()->with('flash', [

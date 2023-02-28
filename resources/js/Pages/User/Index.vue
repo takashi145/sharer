@@ -1,8 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, router, useForm } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { defineProps, onMounted, ref } from 'vue';
-import TimeDiff from '@/utils/time-diff';
 import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
 import Paginate from '@/Components/Pagination.vue';
@@ -15,27 +14,6 @@ const props = defineProps({
 })
 
 const show = ref(false);
-
-const article_id = ref(null);
-
-const form = useForm({
-  url: ''
-})
-
-const deleteArticle = article_id => {
-  router.delete(`/articles/${article_id}`, {
-    onBefore: () => confirm('本当に削除してもよろしいですか？')
-  });
-}
-
-const update = () => {
-  form.put(route('articles.update', article_id.value), {
-    onSuccess: () => { 
-      form.reset('url');  
-      show.value = false;
-    },
-  });
-}
 </script>
 
 <template>
@@ -46,16 +24,16 @@ const update = () => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">UserPage</h2>
         </template>
 
-        <div class="py-12">
+        <div class="py-8">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div class="mx-8 mb-3">
                 <div v-if="$page.props.auth.user.id === user.id" >
-                  <h2 class="mb-3 text-2xl">
+                  <h2 class="mb-3 text-xl">
                     マイページ
                   </h2>
                   <Link 
                     :href="route('profile.edit')" 
-                    class="bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded"
+                    class="text-sm bg-gray-300 hover:bg-gray-400 px-3 py-2 rounded"
                   >
                     プロフィール編集
                   </Link>  
@@ -110,16 +88,7 @@ const update = () => {
                       :key="article.id" 
                       class="p-4 w-full md:w-1/2 lg:w-1/3"
                     >
-                      <LinkCard :article="article">
-                        <div v-if="$page.props.auth.user.id === user.id" class="flex justify-end space-x-3">
-                          <button
-                            @click="deleteArticle(article.id)"
-                            class="text-sm text-red-400 hover:text-red-600 hover:underline"
-                          >
-                            削除
-                          </button>
-                        </div>
-                      </LinkCard>
+                      <LinkCard :article="article" />
                     </div>
 
                     <Modal :show="show" @close="show = false">
@@ -146,7 +115,7 @@ const update = () => {
                   </div>
                 </div>
 
-                <div v-else class="text-gray-600 text-3xl flex justify-center mt-48">
+                <div v-else class="text-gray-600 text-xl flex justify-center mt-48">
                   投稿が有りません
                 </div>
               </div>

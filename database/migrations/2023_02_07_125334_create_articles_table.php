@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->text('thumbnail_url')->nullable();
+            $table->string('title2');
             $table->timestamps();
         });
     }
