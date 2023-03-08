@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\TagResource;
 use App\Models\Article;
 use App\Models\Post;
 use App\Models\Tag;
@@ -26,25 +27,30 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $keyword = $request->query('keyword');
-        $tag_name = $request->query('tag');
+        // $keyword = $request->query('keyword');
+        // $tag_name = $request->query('tag');
 
-        $tag = null;
+        // $tag = null;
 
-        if($tag_name) {
-            $tag = Tag::where('name', $tag_name)->first();
-        }
+        // if($tag_name) {
+        //     $tag = Tag::where('name', $tag_name)->first();
+        // }
         
-        if($tag) {
-            $articles = $tag->articles()->searchKeyword($keyword)->orderBy('id', 'desc')->paginate(30);
-        }else {
-            $articles = Article::searchKeyword($keyword)->orderBy('id', 'desc')->paginate(30);
-        }
+        // if($tag) {
+        //     $articles = $tag->articles()->searchKeyword($keyword)->orderBy('id', 'desc')->paginate(30);
+        // }else {
+        //     $articles = Article::searchKeyword($keyword)->orderBy('id', 'desc')->paginate(30);
+        // }
 
+        // return Inertia::render('Article/Index', [
+        //     // 'articles' => ArticleResource::collection($articles),
+        //     // 'tag_name' => $tag ? $tag->name : null,
+        //     // 'keyword' => $keyword,
+        // ]);
+
+        $tags = Tag::with('articles')->orderBy('updated_at', 'desc')->paginate(10);
         return Inertia::render('Article/Index', [
-            'articles' => ArticleResource::collection($articles),
-            'tag_name' => $tag ? $tag->name : null,
-            'keyword' => $keyword,
+            'tags' => TagResource::collection($tags),
         ]);
     }
 

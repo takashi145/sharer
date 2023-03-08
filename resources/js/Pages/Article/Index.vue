@@ -9,10 +9,11 @@ import SearchInput from '@/Components/SearchInput.vue';
 import Pagination from '@/Components/Pagination.vue';
 
 defineProps({
-  articles: Array,
-  errors: Object,
-  tag_name: Object,
-  keyword: String,
+  // articles: Array,
+  // errors: Object,
+  // tag_name: Object,
+  // keyword: String,
+  tags: Array,
 })
 
 const form = useForm({
@@ -65,8 +66,8 @@ const deleteTag = name => {
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">UserPage</h2>
     </template>
 
-    <div class="pt-8 pb-24">
-      <div class="w-full md:w-2/3 mx-auto mb-8">
+    <div class="mt-8 pb-24">
+      <!-- <div class="w-full md:w-2/3 mx-auto mb-8">
         <SearchInput :keyword="keyword" class="mx-8" />
       </div>
 
@@ -83,19 +84,30 @@ const deleteTag = name => {
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </Link>
-      </div>
-      <div class="max-w-8xl mx-auto sm:px-4 lg:px-8">
-        <ul v-if="articles.data.length >= 1" class="flex flex-wrap">
-          <li v-for="article in articles.data" :key="article.id" class="w-full sm:w-1/2 lg:w-1/3 px-3 my-4">
-            <LinkCard :article="article" class="mx-4 sm:m-0" />
-          </li>
-        </ul>
+      </div> -->
+
+      <div class="max-w-7xl mx-auto sm:px-4">
+        <div v-if="tags.data.length >= 1">
+          <div v-for="tag in tags.data" :key="tag.id" class="overflow-x-auto mx-4 mb-8 pb-8 border-b">
+            <h3 class="text-xl ml-2">
+              {{ tag.name }}
+              <Link href="/" class="mx-2 text-sm text-blue-400 hover:text-blue-600 underline">すべて見る→</Link>
+            </h3>
+            <ul v-if="tag.articles.length >= 1" class="flex min-w-max mt-4">
+              <li v-for="article in tag.articles" :key="article.id" class="w-64">
+                <LinkCard :article="article" class="mx-3" />
+              </li>
+            </ul>
+          </div>  
+        </div>
+        
+        
         <div v-else class="text-xl text-gray-700 flex justify-center mt-24">
           記事がありません。
         </div>
         <div class="flex justify-center mt-8">
-            <Pagination :links="articles.meta.links" />
-          </div>
+          <Pagination :links="tags.meta.links" />
+        </div>
       </div>
     </div>
 
@@ -173,7 +185,7 @@ const deleteTag = name => {
         </div>
       </form>
     </Modal>
-    <button @click="show = true; errors = {}" class="animate-bounce fixed bottom-6 right-6 p-4 bg-blue-400 hover:bg-blue-600 text-gray-100 focus:ring-4 rounded-full">
+    <button @click="show = true; errors = {}" class="fixed bottom-6 right-6 p-4 bg-blue-400 hover:bg-blue-600 text-gray-100 focus:ring-4 rounded-full">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
       </svg>
