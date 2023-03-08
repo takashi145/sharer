@@ -19,6 +19,8 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'is_following' => $this->isFollowing(Auth::id()),
+            'followers' => $this->followers()->count(),
+            'follows' => $this->follows()->count()
         ];
     }
 }
