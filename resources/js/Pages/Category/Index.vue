@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
 import InputError from '@/Components/InputError.vue';
@@ -11,6 +11,10 @@ import Pagination from '@/Components/Pagination.vue';
 defineProps({
   categories: Array,
 })
+
+const show = ref(false);
+
+
 </script>
 <template>
   <Head title="ArticlePage" />
@@ -30,7 +34,7 @@ defineProps({
             </h3>
             <div class="overflow-x-auto pb-3">
               <ul v-if="category.articles.length >= 1" class="flex min-w-max mt-4 ">
-                <li v-for="article in category.articles" :key="article.id" class="w-64">
+                <li v-for="article in category.articles" :key="article.id" class="w-64 p-3">
                   <LinkCard :article="article" class="mx-3" />
                 </li>
               </ul>
@@ -39,7 +43,6 @@ defineProps({
                 記事がありません
               </div>
             </div>
-            
            
           </div>  
         </div>

@@ -1,14 +1,15 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 import Like from '@/Components/Like.vue';
 import { Link, router } from '@inertiajs/vue3';
 import {TimeDiff, NewDate} from '@/utils/time-diff';
+import Modal from './Modal.vue';
 
 const props = defineProps({
   article: Object
 })
 
-const now = new Date();
+const show = ref(false);
 
 const deleteArticle = () => {
   router.delete(`/articles/${props.article.id}`, {
@@ -28,32 +29,59 @@ const deleteArticle = () => {
       </div>
     </div>
     
-    
-    <a :href="article.url" target="_blank" rel="noopener noreferrer" >
+    <!-- :href="article.url" target="_blank" rel="noopener noreferrer"  -->
+    <a @click="show = true">
       <img class="h-36 w-full hover:cursor-pointer   object-cover object-center mb-6 border hover:opacity-75" :src="article.thumbnail_url" alt="content">
     </a>
     <div class="px-2 h-10 overflow-y-auto">
       <h2 class="text-sm text-gray-900 font-medium title-font mb-4">{{ article.title2 }}</h2>
     </div>
     <p class="text-xs text-end">{{ TimeDiff(article.updated_at) }}</p>
-    <div class="flex justify-between mt-3">
-      <ul class="flex flex-wrap">
-        <li v-for="tag in article.tags" :key="tag.id" class="flex items-center p-1 bg-gray-300 rounded text-sm mx-1 mb-2">
-          <Link :href="`/articles?tag=${tag.name}`" class="flex">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
-            </svg>
-            {{ tag.name }}
-          </Link>
-        </li>
-      </ul>
-      <!-- <Like 
-        :article_id="article.id" 
-        :is_liked="article.is_liked"
-        class="m-1"
-      />   -->
-    </div>
   </div>
-  
+
+  <Modal :show="show" @close="show = false">
+    <div class="p-4">
+      <div>
+        <img class="h-60 w-full object-cover object-center border" :src="article.thumbnail_url" alt="content">
+      </div>
+      <div class="mb-3">
+        <div class="flex justify-between my-3">
+          <ul class="flex flex-wrap">
+            <li v-for="tag in article.tags" :key="tag.id" class="flex items-center p-1 bg-gray-300 rounded text-sm mx-1 mb-2">
+              <Link :href="`/articles?tag=${tag.name}`" class="flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                </svg>
+                {{ tag.name }}
+              </Link>
+            </li>
+          </ul>
+          <Like 
+            :article_id="article.id" 
+            :is_liked="article.is_liked"
+            class="m-1"
+          />  
+        </div>
+        <div class="text-end">
+          共有者: <Link class="text-lg underline">{{ article.user.name }}</Link>
+        </div>
+        <h3 class="text-2xl mb-3">{{ article.title }}</h3>
+        <p>
+          {{ article.description }}
+        </p>
+      </div>
+      
+      <div class="text-end">
+        <a 
+          :href="article.url" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="text-blue-400 hover:text-blue-500 underline"
+        >記事ページへ→</a>  
+      </div>
+      
+    </div>
+    
+  </Modal>
 </template>

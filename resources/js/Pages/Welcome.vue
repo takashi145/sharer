@@ -12,13 +12,11 @@ defineProps({
 <template>
     <Head title="Welcome" />
 
-    <div
-        class="relative flex h-screen bg-gray-100 sm:pt-0 flex-col"
-    >
+    <div class="relative flex h-screen bg-gray-100 sm:pt-0 flex-col">
         <div v-if="canLogin" class="z-10 hidden fixed top-0 right-0 px-6 py-4 sm:block">
             <Link
                 v-if="$page.props.auth.user"
-                :href="route('articles.index')"
+                :href="route('category.index')"
                 class="text-sm text-gray-700 underline"
                 >ホーム</Link
             >
@@ -45,7 +43,7 @@ defineProps({
         </div>
         
         <div class="w-full h-1/2 flex items-center justify-center bg-white">
-            <Link :href="[(canLogin && $page.props.auth.user) ? route('articles.index') : route('login')]">
+            <Link :href="[(canLogin && $page.props.auth.user) ? route('category.index') : route('login')]">
                 <button class="text-2xl text-gray-100 font-semibold bg-slate-400 hover:bg-slate-500 px-5 py-3 rounded">
                     始める→
                 </button>
