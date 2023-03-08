@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { defineProps, onMounted, ref } from 'vue';
 import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
@@ -14,6 +14,13 @@ const props = defineProps({
 })
 
 const show = ref(false);
+
+const deleteArticle = id => {
+  router.delete(route('article.delete', {'article': id}), {
+    onBefore: () => confirm('本当に削除してもよろしいですか？'),
+    onSuccess: () => show.value = false
+  })
+}
 </script>
 
 <template>
@@ -88,7 +95,16 @@ const show = ref(false);
                       :key="article.id" 
                       class="p-4 w-1/2 md:w-1/3 lg:w-1/4"
                     >
-                      <LinkCard :article="article" />
+                      <LinkCard :article="article">
+                        <div class="">
+                          <button 
+                            @click="deleteArticle(article.id)"
+                            class="bg-red-400 hover:bg-red-500 text-white py-2 px-3 rounded"
+                          >
+                            削除
+                          </button>
+                        </div>
+                      </LinkCard>
                     </div>
 
                     <Modal :show="show" @close="show = false">

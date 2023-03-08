@@ -21,11 +21,10 @@ defineProps({
     <template #header>
       <div class="flex justify-between items-center">
         <h2 class="font-semibold text-lg text-gray-800 leading-tight">{{ category.name }}</h2>
-        <div class="w-full md:w-1/3">
+        <div class="w-2/3 lg:w-1/3">
           <SearchInput :keyword="keyword" class="mx-8" />
         </div>  
       </div>
-      
     </template>
 
     <div class="mt-8 pb-24">
@@ -45,15 +44,23 @@ defineProps({
       </div>
 
       <div class="max-w-7xl mx-auto sm:px-4">
+        <Link 
+          :href="route('category.index')"
+          class="text-blue-400 hover:text-blue-500 underline mx-3"
+        >←ホームへ戻る</Link>
+        
         <div v-if="articles.data.length >= 1">
           <ul class="flex flex-wrap">
             <li v-for="article in articles.data" :key="article.id" class="w-1/2 md:w-1/3 lg:w-1/5 p-3">
               <LinkCard :article="article" />
             </li>
-          </ul>  
+          </ul>
+          <div class="flex justify-center mt-8">
+            <Pagination :links="articles.meta.links" />
+          </div>
         </div>
-        <div class="flex justify-center mt-8">
-          <Pagination :links="articles.meta.links" />
+        <div v-else class="text-center text-xl mt-24 text-gray-700">
+          記事がありません。
         </div>
       </div>
     </div>

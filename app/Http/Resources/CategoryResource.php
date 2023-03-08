@@ -17,7 +17,7 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'articles' => ArticleResource::collection($this->articles()->limit(10)->get()),
+            'articles' => ArticleResource::collection($this->articles()->orderBy('updated_at', 'desc')->limit(10)->get()),
         ];
     }
 }

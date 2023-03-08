@@ -29,7 +29,6 @@ const deleteArticle = () => {
       </div>
     </div>
     
-    <!-- :href="article.url" target="_blank" rel="noopener noreferrer"  -->
     <a @click="show = true">
       <img class="h-36 w-full hover:cursor-pointer   object-cover object-center mb-6 border hover:opacity-75" :src="article.thumbnail_url" alt="content">
     </a>
@@ -42,7 +41,7 @@ const deleteArticle = () => {
   <Modal :show="show" @close="show = false">
     <div class="p-4">
       <div>
-        <img class="h-60 w-full object-cover object-center border" :src="article.thumbnail_url" alt="content">
+        <img class="h-80 w-full object-cover object-center border" :src="article.thumbnail_url" alt="content">
       </div>
       <div class="mb-3">
         <div class="flex justify-between my-3">
@@ -80,7 +79,10 @@ const deleteArticle = () => {
           class="text-blue-400 hover:text-blue-500 underline"
         >記事ページへ→</a>  
       </div>
-      
+
+      <div>
+        <slot />
+      </div>
     </div>
     
   </Modal>
