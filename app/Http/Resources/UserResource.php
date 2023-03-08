@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends JsonResource
 {
@@ -17,6 +18,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'is_following' => $this->isFollowing(Auth::id()),
         ];
     }
 }

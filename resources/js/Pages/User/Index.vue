@@ -5,6 +5,7 @@ import { defineProps, onMounted, ref } from 'vue';
 import LinkCard from '@/Components/LinkCard.vue';
 import Modal from '@/Components/Modal.vue';
 import Paginate from '@/Components/Pagination.vue';
+import FollowButton from '@/Components/FollowButton.vue';
 
 const props = defineProps({
   articles: Array,
@@ -46,9 +47,14 @@ const deleteArticle = id => {
                   </Link>  
                 </div>
                 <div v-else>
-                  <h2 class="mb-3">
+                  <h2 class="mb-2">
                     <span class="text-xl mx-1 underline">{{ user.name }}</span>のユーザーページ
                   </h2>
+                  <div class="mb-2 space-x-3">
+                    <a class="text-gray-600 hover:text-gray-800 hover:underline cursor-pointer">0 follower</a>
+                    <a class="text-gray-600 hover:text-gray-800 hover:underline cursor-pointer">0 following</a>
+                  </div>
+                  <FollowButton :user_id="user.id" :is_following="user.is_following" />
                 </div>
               </div>
 

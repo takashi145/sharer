@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -48,6 +49,8 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::delete('/articles/{article}/like', [LikeController::class, 'unlike'])->name('article.unlike');
 
     Route::get('/users/{user}', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user/{user}/follow', [FollowController::class, 'follow'])->name('user.follow');
+    Route::delete('/user/{user}/follow', [FollowController::class, 'unfollow'])->name('user.unfollow');
 });
 
 require __DIR__.'/auth.php';
