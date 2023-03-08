@@ -14,7 +14,7 @@ defineProps({
 })
 
 const form = useForm({
-  category: null,
+  category: '',
   title2: '',
   url: '',
   tags: [],
@@ -74,7 +74,7 @@ const deleteTag = name => {
                 </svg>
               </span>
               <select v-model="form.category" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5">
-                <option :value="null" class="text-gray-500">カテゴリーを選択してください。</option>
+                <option value="" class="text-gray-500">カテゴリーを選択してください。</option>
                 <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.name }}</option>
               </select>
             </div>
@@ -108,6 +108,7 @@ const deleteTag = name => {
           <div>
             <label for="">Tag</label>
             <p class="text-red-400 text-sm">{{ message }}</p>
+            <p class="text-sm text-gray-600">タグ名を入力後は「Add」ボタンを押して追加してください。</p>
             <div class="relative flex mb-1">
               <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -118,15 +119,16 @@ const deleteTag = name => {
               <input type="text" v-model="tag" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5" placeholder="タグ名を入力してください。">    
               <button type="button" :disabled="!tag" @click="addTag" class="text-white absolute right-2.5 bottom-1 bg-slate-600 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5">Add</button>
             </div>
-            <p class="text-sm text-gray-600">タグ名を入力後は「Add」ボタンを押して追加してください。</p>
-            <ul class="flex ">
+            
+            <ul class="flex items-center">
+              タグ： <div v-if="form.tags.length === 0" class="text-sm text-gray-800">タグなし</div>
               <li v-for="t in form.tags" :key="t" class="">
-                <span id="badge-dismiss-dark" class="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-gray-800 bg-gray-100 rounded dark:bg-gray-700 dark:text-gray-300">
+                <span id="badge-dismiss-dark" class="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-gray-800 bg-blue-200 rounded">
                   {{ t }}
                   <button 
                     type="button" 
                     @click="deleteTag(t)" 
-                    class="inline-flex items-center p-0.5 ml-2 text-sm text-gray-400 bg-transparent rounded-sm hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-gray-300"
+                    class="inline-flex items-center p-0.5 ml-2 text-sm text-gray-400 bg-transparent rounded-sm hover:bg-gray-200 hover:text-gray-900 "
                   >
                       <svg aria-hidden="true" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                   </button>
@@ -139,11 +141,11 @@ const deleteTag = name => {
           <button 
             type="button" 
             @click="submit" 
-            :disabled="!form.url || !form.title2"
-            :class="[!form.url || !form.title2 ? 'bg-gray-400' : 'bg-indigo-400 hover:bg-indigo-600']"
+            :disabled="!form.url || !form.title2 || !form.category"
+            :class="[!form.url || !form.title2 || !form.category ? 'bg-gray-400/50' : 'bg-indigo-400 hover:bg-indigo-600']"
             class="text-white w-full py-2 rounded"
           >
-            Submit
+            共有する
           </button>
         </div>
       </form>

@@ -20,7 +20,6 @@ const show = ref(false);
   <Head title="ArticlePage" />
 
   <AuthenticatedLayout>
-
     <div class="mt-8 pb-24">
       <div class="max-w-7xl mx-auto sm:px-4">
         <div v-if="categories.data.length >= 1">
@@ -38,12 +37,10 @@ const show = ref(false);
                   <LinkCard :article="article" class="mx-3" />
                 </li>
               </ul>
-
               <div v-else class="mt-8 ml-24 text-gray-700">
                 記事がありません
               </div>
             </div>
-           
           </div>  
         </div>
         <div class="flex justify-center mt-8">
