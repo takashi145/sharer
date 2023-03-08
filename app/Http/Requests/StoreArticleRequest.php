@@ -24,6 +24,7 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
+            'category' => ['required'],
             'title2' => ['required', 'max:30'],
             'url' => ['required', 'active_url'],
             'tags' => ['nullable'],
@@ -33,6 +34,7 @@ class StoreArticleRequest extends FormRequest
     public function attributes()
     {
         return [
+            'category' => 'カテゴリー',
             'title2' => 'タイトル',
         ];
     }

@@ -39,8 +39,8 @@ const show = ref(false);
                   </Link>  
                 </div>
                 <div v-else>
-                  <h2 class="mb-3 text-xl">
-                    <span class="text-3xl mx-1 underline">{{ user.name }}</span>のユーザーページ
+                  <h2 class="mb-3">
+                    <span class="text-xl mx-1 underline">{{ user.name }}</span>のユーザーページ
                   </h2>
                 </div>
               </div>
@@ -86,7 +86,7 @@ const show = ref(false);
                     <div
                       v-for="article in articles.data" 
                       :key="article.id" 
-                      class="p-4 w-full md:w-1/2 lg:w-1/3"
+                      class="p-4 w-1/2 md:w-1/3 lg:w-1/4"
                     >
                       <LinkCard :article="article" />
                     </div>

@@ -1,4 +1,4 @@
-const TimeDiff = postDay => {
+export const TimeDiff = postDay => {
   let posted = new Date(postDay); 
   let diff = new Date().getTime() - posted.getTime();
   let progress = new Date(diff);
@@ -20,4 +20,12 @@ const TimeDiff = postDay => {
   }
 }
 
-export default TimeDiff;
+export const NewDate = postDay => {
+  let posted = new Date(postDay); 
+  let diff = new Date().getTime() - posted.getTime();
+  let progress = new Date(diff);
+
+  if ((progress.getUTCDate() - 1) > 1) return false;
+
+  return true;
+}

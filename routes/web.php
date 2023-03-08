@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -37,7 +38,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function() {
-    Route::resource('articles', ArticleController::class);
+    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('/category/{category}/article', [ArticleController::class, 'index'])->name('article.index');
+    Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
+    Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
+    Route::delete('/article', [ArticleController::class, 'destroy'])->name('article.delete');
 
     Route::put('/articles/{article}/like', [LikeController::class, 'like'])->name('article.like');
     Route::delete('/articles/{article}/like', [LikeController::class, 'unlike'])->name('article.unlike');

@@ -20,7 +20,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            CategorySeeder::class,
         ]);
-        
+
+        User::factory(50)->create()->each(function($user) {
+            Article::factory(50)->create(['user_id' => $user->id]);
+        });
     }
 }
