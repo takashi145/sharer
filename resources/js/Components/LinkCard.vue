@@ -30,7 +30,7 @@ const deleteArticle = () => {
     </div>
     
     <a @click="show = true">
-      <img class="h-36 w-full hover:cursor-pointer   object-cover object-center mb-6 border hover:opacity-75" :src="article.thumbnail_url" alt="content">
+      <img class="h-36 w-full hover:cursor-pointer object-cover object-center mb-6 border hover:opacity-75" :src="article.thumbnail_url" alt="content">
     </a>
     <div class="px-2 h-10 overflow-y-auto">
       <h2 class="text-sm text-gray-900 font-medium title-font mb-4">{{ article.title2 }}</h2>

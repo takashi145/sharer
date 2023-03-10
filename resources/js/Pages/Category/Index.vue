@@ -34,7 +34,7 @@ const show = ref(false);
             <div class="overflow-x-auto pb-3 mx-6">
               <ul v-if="category.articles.length >= 1" class="flex items-center min-w-max mt-4 mx-3">
                 <li v-for="article in category.articles" :key="article.id" class="w-64 p-3">
-                  <LinkCard :article="article" class="mx-3" />
+                  <LinkCard :article="article" />
                 </li>
                 <li>
                   <Link :href="route('article.index', {'category': category.id})" class=" text-blue-500 font-extrabold">

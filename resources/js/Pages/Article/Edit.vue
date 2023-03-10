@@ -88,7 +88,7 @@ const update = () => {
           <div>
             <label for="">Tag</label>
             <p class="text-red-400 text-sm">{{ message }}</p>
-            <p class="text-sm text-gray-600">タグ名を空白区切りで5つまで入力してください。</p>
+            <p class="text-sm text-gray-600">タグは空白区切りで5つまで追加できます。</p>
             <div class="relative flex mb-1">
               <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -96,7 +96,7 @@ const update = () => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
                 </svg>
               </span>
-              <input type="text" v-model="form.tags" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5" placeholder="タグ名を入力してください。">    
+              <input type="text" v-model="form.tags" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5" placeholder="タグ名を空白区切りで入力してください。">    
             </div>
           </div>
         </div>
