@@ -22,7 +22,7 @@ class ArticleFactory extends Factory
         return [
             'url' => fake()->url(),
             'user_id' => User::factory(),
-            'category_id' => rand(1, 10),
+            'category_id' => rand(1, 13),
             'title2' => fake()->word(),
             'title' => fake()->word(),
             'description' => fake()->realText(200),

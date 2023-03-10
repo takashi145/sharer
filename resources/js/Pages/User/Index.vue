@@ -52,13 +52,11 @@ const show_follows_modal = async () => {
 </script>
 
 <template>
-    <Head title="UserPage" />
+    <Head 
+      :title="[$page.props.auth.user.id === user.id ? 'MyPage' : 'UserPage']" 
+    />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">UserPage</h2>
-        </template>
-
         <div class="py-8">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
               <div class="mx-6 mb-3">
@@ -164,7 +162,7 @@ const show_follows_modal = async () => {
         </div>
     </AuthenticatedLayout>
 
-    <!---->
+    <!--記事詳細-->
     <Modal :show="show" @close="show = false">
       <div class="text-xl m-3 border-b">
         記事のリンクを追加
@@ -187,7 +185,8 @@ const show_follows_modal = async () => {
       </form>
     </Modal>
 
-    <Modal :show="show_followers" @close="show_followers = false">
+    <!--フォロワー表示-->
+    <Modal :show="show_followers" maxWidth="sm" @close="show_followers = false">
       <div class="overflow-y-auto">
         <h3 class="p-3 bg-gray-100 sticky top-0 text-lg border-b">Followers</h3>
         <ul v-if="followers.length >= 1" class="px-3 h-[500px] max-w-md mx-auto divide-y divide-gray-200">
@@ -215,10 +214,11 @@ const show_follows_modal = async () => {
       </div>
     </Modal>
 
-    <Modal :show="show_following" @close="show_following = false">
+    <!--フォローしているユーザー表示-->
+    <Modal :show="show_following" maxWidth="sm" @close="show_following = false">
       <div class="overflow-y-auto">
         <h3 class="p-3 bg-gray-100 sticky top-0 text-lg border-b">Following</h3>
-        <ul v-if="follows.length >= 1" class="h-[500px] max-w-md mx-auto divide-y divide-gray-200">
+        <ul v-if="follows.length >= 1" class="px-3 h-[500px] max-w-md mx-auto divide-y divide-gray-200">
           <li v-for="follow in follows" :key="follow.id" class="py-3 sm:pb-4">
               <div class="flex items-center space-x-4">
                 <div class="flex-shrink-0">
@@ -241,6 +241,7 @@ const show_follows_modal = async () => {
       </div>
     </Modal>
 
+    <!--削除確認-->
     <Modal 
       :show="delete_article_id" 
       :addClass="`z-50 mt-24`"

@@ -19,15 +19,14 @@ defineProps({
 
   <AuthenticatedLayout>
     <template #header>
-      <div class="flex justify-between items-center">
-        <h2 class="text-lg text-gray-800 leading-tight">
+      <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-3 lg:space-y-0">
+        <h2 class="text-gray-800 leading-tight">
           カテゴリー: 
           <span class="font-semibold underline">{{ category.name }}</span>
         </h2>
-        <div class="w-2/3 lg:w-1/3 flex items-center">
-          <Link v-if="keyword" href="" :data="{'keyword': null}" class="text-sm underline text-blue-500 hover:text-blue-600">リセット</Link>
-          <SearchInput :keyword="keyword" class="ml-3 mr-8 w-2/3" />
-        </div>  
+        <div class="w-2/3 lg:w-1/3">
+          <SearchInput :keyword="keyword" class="lg:mx-6" />
+        </div>
       </div>
     </template>
 

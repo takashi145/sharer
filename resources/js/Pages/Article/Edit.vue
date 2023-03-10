@@ -37,7 +37,7 @@ const update = () => {
   <Head title="CreateArticle" />
 
   <AuthenticatedLayout>
-    <div class="mt-12 pb-24">
+    <div class="mt-12">
       <form class=" bg-white m-6 space-y-4 p-8 max-w-lg mx-auto rounded shadow-lg">
         <Link 
           :href="route('user.index', {'user': article.user_id})" 

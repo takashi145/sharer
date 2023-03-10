@@ -63,7 +63,7 @@ const deleteArticle = () => {
           />  
         </div>
         <div class="text-end">
-          共有者: <Link class="text-lg underline">{{ article.user.name }}</Link>
+          共有者: <Link :href="route('user.index', {'user': article.user.id})" class="text-lg underline">{{ article.user.name }}</Link>
         </div>
         <h3 class="text-2xl mb-3">{{ article.title }}</h3>
         <p>
