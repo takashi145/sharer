@@ -24,7 +24,7 @@ const deleteArticle = () => {
         <span class="text-sm">共有者: </span>
         <Link :href="route('user.index', article.user.id)" class=" text-gray-600 hover:text-gray-800 underline hover:cursor-pointer">{{ article.user.name }}</Link>  
       </div>
-      <div v-if="NewDate(article.updated_at)" class="p-1 text-green-500 font-semibold">
+      <div v-if="NewDate(article.updated_at)" class="text-sm text-green-500 font-semibold">
         New
       </div>
     </div>

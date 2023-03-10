@@ -1,16 +1,21 @@
 <script setup>
-import { defineProps } from 'vue';
+import {ref, defineProps } from 'vue';
 
 const props = defineProps({
   status: String,
   message: String
 });
 
+const show = ref(!!props.message)
+
+setTimeout(() => {
+    show.value = null;
+}, 3000);
 
 </script>
 <template>
   <div 
-      v-if="message" 
+      v-if="show" 
       class="fixed top-8 w-full"
   >
       <div 
