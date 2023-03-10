@@ -27,7 +27,6 @@ class StoreArticleRequest extends FormRequest
             'category' => ['required'],
             'title2' => ['required', 'max:30'],
             'url' => ['required', 'active_url'],
-            'tags' => ['nullable'],
         ];
     }
 

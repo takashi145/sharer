@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreArticleRequest;
+use App\Http\Resources\ArticleDetailResource;
 use App\Http\Resources\ArticleResource;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\TagResource;
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +44,7 @@ class ArticleController extends Controller
 
         return Inertia::render('Article/Index', [
             'category' => $category,
-            'articles' => ArticleResource::collection($articles),
+            'articles' => ArticleDetailResource::collection($articles),
             'tag_name' => $tag ? $tag->name : null,
             'keyword' => $keyword,
         ]);
@@ -80,15 +78,13 @@ class ArticleController extends Controller
                 $article->save();
             }
 
-            $tags = array_unique($request->input('tags'));
-            foreach($tags as $key => $tag_name) {
-                if($key >= 5) {
+            $tags = preg_split("/( |　)+/", $request->input('tags'));
+            foreach($tags as $key => $tag) {
+                if($key > 5) {
                     break;
                 }
-                $tag = Tag::firstOrCreate([
-                    'name' => $tag_name
-                ]);
-
+                $tag = Tag::updateOrCreate(['name' => $tag]);
+                $article->tags()->detach($tag->id);
                 $article->tags()->attach($tag->id);
             }
             
@@ -106,6 +102,55 @@ class ArticleController extends Controller
                 ->with('flash', [
                     'status' => 'error',
                     'message' => 'リンクの追加に失敗しました。'
+                ]);
+        }
+    }
+
+    public function edit(Article $article)
+    {
+        return Inertia::render('Article/Edit', [
+            'categories' => Category::select('id', 'name')->get(),
+            'article' => new ArticleResource($article),
+        ]);
+    }
+
+    public function update(StoreArticleRequest $request, Article $article)
+    {
+        DB::beginTransaction();
+        try {
+            $article->category_id = $request->input('category');
+            $article->title2 = $request->input('title2');
+            $article->url = $request->input('url');
+
+            if($article->setAttributes($request->input('url'))){
+                $article->updated_at = now();
+                $article->save();
+            }
+
+            $tags = preg_split("/( |　)+/", $request->input('tags'));
+            foreach($tags as $key => $tag) {
+                if($key > 5) {
+                    break;
+                }
+                $tag = Tag::updateOrCreate(['name' => $tag]);
+                $article->tags()->detach($tag->id);
+                $article->tags()->attach($tag->id);
+            }
+            
+            DB::commit();
+
+            return Redirect::route('user.index', ['user' => Auth::id()])
+                ->with('flash', [
+                    'status' => 'success',
+                    'message' => '記事を更新しました。',
+                ]);
+        }catch(\Exception $e) {
+            DB::rollBack();
+
+            return back()
+                ->with('flash', [
+                    'status' => 'error',
+                    'message' => '更新に失敗しました。'
                 ]);
         }
     }

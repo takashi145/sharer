@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
-class ArticleResource extends JsonResource
+class ArticleDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,16 @@ class ArticleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'category_id' => 1,
-            'user_id' => $this->user_id,
+            'category_id' => $this->category_id,
             'title2' => $this->title2,
+            'title' => $this->title,
+            'description' => $this->description,
             'url' => $this->url,
-            'tags' => $this->tags()->pluck('name'),
+            'thumbnail_url' => $this->thumbnail_url,
+            'is_liked' => $this->is_liked(Auth::user()),
+            'updated_at' => $this->updated_at,
+            'user' => new UserResource($this->user),
+            'tags' => $this->tags,
         ];
     }
 }

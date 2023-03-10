@@ -8,22 +8,25 @@ import InputError from '@/Components/InputError.vue';
 import SearchInput from '@/Components/SearchInput.vue';
 import Pagination from '@/Components/Pagination.vue';
 
-defineProps({
+const props = defineProps({
   categories: Array,
+  article: Object,
   errors: Object
 })
 
 const form = useForm({
-  category: '',
-  title2: '',
-  url: '',
-  tags: '',
+  category: props.article.category_id,
+  title2: props.article.title2,
+  url: props.article.url,
+  tags: props.article.tags.join(' '),
 })
 
 const message = ref('');
 
-const submit = () => {
-  form.post(route('article.store'), {
+const tag = ref('');
+
+const update = () => {
+  form.put(route('article.update', {'article': props.article.id}), {
     onSuccess: () => {
       form.reset();
     },
@@ -37,10 +40,10 @@ const submit = () => {
     <div class="mt-12 pb-24">
       <form class=" bg-white m-6 space-y-4 p-8 max-w-lg mx-auto rounded shadow-lg">
         <Link 
-          :href="route('category.index')" 
+          :href="route('user.index', {'user': article.user_id})" 
           class="text-blue-400 hover:text-blue-500 underline"
-        >←戻る</Link>
-        <h3>記事を共有</h3>
+        >←マイページに戻る</Link>
+        <h3>記事を更新</h3>
         <div class="space-y-4">
           <div>
             <label for="">Category</label>
@@ -85,7 +88,7 @@ const submit = () => {
           <div>
             <label for="">Tag</label>
             <p class="text-red-400 text-sm">{{ message }}</p>
-            <p class="text-sm text-gray-600">タグ名を入力後は「Add」ボタンを押して追加してください。</p>
+            <p class="text-sm text-gray-600">タグ名を空白区切りで5つまで入力してください。</p>
             <div class="relative flex mb-1">
               <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -100,12 +103,12 @@ const submit = () => {
         <div class="text-end">
           <button 
             type="button" 
-            @click="submit" 
+            @click="update" 
             :disabled="!form.url || !form.title2 || !form.category"
             :class="[!form.url || !form.title2 || !form.category ? 'bg-gray-400/50' : 'bg-indigo-400 hover:bg-indigo-600']"
             class="text-white w-full py-2 rounded"
           >
-            共有する
+            更新する
           </button>
         </div>
       </form>

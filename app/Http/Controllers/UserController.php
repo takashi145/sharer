@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleDetailResource;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
@@ -31,7 +32,7 @@ class UserController extends Controller
         }
 
         return Inertia::render('User/Index', [
-            'articles' => ArticleResource::collection($articles),
+            'articles' => ArticleDetailResource::collection($articles),
             'user' => new UserResource($user),
             'type' => $type
         ]);

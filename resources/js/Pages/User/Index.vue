@@ -127,13 +127,20 @@ const show_follows_modal = async () => {
                       class="p-4 w-1/2 md:w-1/3 lg:w-1/4"
                     >
                       <LinkCard :article="article">
-                        <div class="">
+                        <div class="mt-3 space-x-3 text-sm">
                           <button 
                             @click="deleteArticle(article.id)"
                             class="bg-red-400 hover:bg-red-500 text-white py-2 px-3 rounded"
                           >
                             削除
                           </button>
+                          <Link
+                            :href="route('article.edit', {'article': article.id})"
+                            as="button" 
+                            class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-3 rounded"
+                          >
+                            編集
+                          </Link>
                         </div>
                       </LinkCard>
                     </div>
@@ -185,11 +192,11 @@ const show_follows_modal = async () => {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <div class="flex-1 min-w-0">
+                <Link :href="route('user.index', {'user': follower.id})" class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate">
                       {{ follower.name }}
                     </p>
-                </div>
+                </Link>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
                   <FollowButton :user_id="follower.id" :is_following="follower.is_following" />
                 </div>
@@ -213,11 +220,11 @@ const show_follows_modal = async () => {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <div class="flex-1 min-w-0">
+                <Link :href="route('user.index', {'user': follow.id})" class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate">
                       {{ follow.name }}
                     </p>
-                </div>
+                </Link>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900">
                   <FollowButton :user_id="follow.id" :is_following="follow.is_following" />
                 </div>

@@ -31,10 +31,17 @@ const show = ref(false);
                 class="mx-2 text-sm text-blue-400 hover:text-blue-600 underline"
               >すべて見る→</Link>
             </h3>
-            <div class="overflow-x-auto pb-3">
-              <ul v-if="category.articles.length >= 1" class="flex min-w-max mt-4 ">
+            <div class="overflow-x-auto pb-3 mx-6">
+              <ul v-if="category.articles.length >= 1" class="flex items-center min-w-max mt-4 mx-3">
                 <li v-for="article in category.articles" :key="article.id" class="w-64 p-3">
                   <LinkCard :article="article" class="mx-3" />
+                </li>
+                <li>
+                  <Link :href="route('article.index', {'category': category.id})" class=" text-blue-500 font-extrabold">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 hover:scale-110">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
+                    </svg>
+                  </Link>
                 </li>
               </ul>
               <div v-else class="mt-8 ml-24 text-gray-700">

@@ -12,7 +12,7 @@ const keyword = ref(props.keyword);
   <div>
       <div class="flex">
           <div class="relative w-full">
-              <input type="search" v-model="keyword" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-gray-300 border  focus:ring-blue-500 focus:border-blue-500" placeholder="Search" required>
+              <input type="search" v-model="keyword" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg border-gray-300 border  focus:ring-blue-500 focus:border-blue-500" placeholder="キーワード検索" required>
               <Link 
                 href="" 
                 :data="{ keyword }"
