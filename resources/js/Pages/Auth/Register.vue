@@ -26,7 +26,6 @@ const submit = () => {
         <Head title="Register" />
 
         <form @submit.prevent="submit">
-            <h3 class="text-xl font-semibold text-center mb-4">新規登録</h3>
             <div>
                 <InputLabel for="name" value="ユーザー名" />
 

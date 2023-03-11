@@ -13,7 +13,7 @@ defineProps({
 <template>
     <Head title="Welcome" />
 
-    <div class="relative flex h-screen bg-gray-100 sm:pt-0 flex-col">
+    <div class="relative flex h-screen  sm:pt-0 flex-col">
         <div v-if="canLogin" class="z-10 fixed top-0 right-0 px-6 py-4">
             <Link
                 v-if="$page.props.auth.user"

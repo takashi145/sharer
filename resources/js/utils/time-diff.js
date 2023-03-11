@@ -1,3 +1,4 @@
+// 現在時刻までの経過時間を返す
 export const TimeDiff = postDay => {
   let posted = new Date(postDay); 
   let diff = new Date().getTime() - posted.getTime();
@@ -18,14 +19,4 @@ export const TimeDiff = postDay => {
   } else {
     return progress.getUTCSeconds() + '秒前';
   }
-}
-
-export const NewDate = postDay => {
-  let posted = new Date(postDay); 
-  let diff = new Date().getTime() - posted.getTime();
-  let progress = new Date(diff);
-
-  if ((progress.getUTCDate() - 1) > 1) return false;
-
-  return true;
 }

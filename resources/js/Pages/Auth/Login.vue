@@ -34,8 +34,7 @@ const submit = () => {
         </div>
 
         <form @submit.prevent="submit">
-            <h3 class="text-xl font-semibold text-center mb-4">ログイン</h3>
-            <div>
+            <div class="mt-4">
                 <InputLabel for="email" value="メールアドレス" />
 
                 <TextInput

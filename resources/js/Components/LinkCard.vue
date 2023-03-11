@@ -2,7 +2,7 @@
 import { defineProps, ref } from 'vue';
 import Like from '@/Components/Like.vue';
 import { Link, router } from '@inertiajs/vue3';
-import {TimeDiff, NewDate} from '@/utils/time-diff';
+import { TimeDiff } from '@/utils/time-diff';
 import Modal from './Modal.vue';
 
 const props = defineProps({
@@ -11,10 +11,26 @@ const props = defineProps({
 
 const show = ref(false);
 
+const delete_article_id = ref(null);
+
+const isNewPost = postDay => {
+  let posted = new Date(postDay); 
+  let diff = new Date().getTime() - posted.getTime();
+  let progress = new Date(diff);
+
+  // 3時間以内の投稿はtrue
+  if (progress.getUTCHours() <= 3) return true;
+
+  return false;
+}
+
 const deleteArticle = () => {
-  router.delete(`/articles/${props.article.id}`, {
-    onBefore: () => confirm('本当に削除してもよろしいですか？')
-  });
+  router.delete(route('article.delete', {'article': delete_article_id.value}), {
+    onSuccess: () => { 
+      delete_article_id.value = null;
+      show.value = false;
+    }
+  })
 }
 </script>
 <template>
@@ -24,7 +40,7 @@ const deleteArticle = () => {
         <span class="text-sm">共有者: </span>
         <Link :href="route('user.index', article.user.id)" class=" text-gray-600 hover:text-gray-800 underline hover:cursor-pointer">{{ article.user.name }}</Link>  
       </div>
-      <div v-if="NewDate(article.updated_at)" class="text-sm text-green-500 font-semibold">
+      <div v-if="isNewPost(article.updated_at)" class="text-sm text-green-500 font-semibold">
         New
       </div>
     </div>
@@ -41,7 +57,7 @@ const deleteArticle = () => {
   <Modal :show="show" @close="show = false">
     <div class="p-4">
       <div>
-        <img class="h-80 w-full object-cover object-center border" :src="article.thumbnail_url" alt="content">
+        <img class="h-60 sm:h-80 w-full object-cover object-center border" :src="article.thumbnail_url" alt="content">
       </div>
       <div class="mb-3">
         <div class="flex justify-between my-3">
@@ -80,10 +96,49 @@ const deleteArticle = () => {
         >記事ページへ→</a>  
       </div>
 
-      <div>
-        <slot />
+      <div class="mt-6 flex justify-between items-center">
+        <div v-if="$page.props.auth.user.id === article.user.id" class="mt-3 space-x-3 text-sm">
+          <button 
+            @click="delete_article_id = article.id"
+            class="bg-red-400 hover:bg-red-500 text-white py-2 px-3 rounded"
+          >
+            削除
+          </button>
+          <Link
+            :href="route('article.edit', {'article': article.id})"
+            as="button" 
+            class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-3 rounded"
+          >
+            編集
+          </Link>
+        </div>
+
+        <button @click="show=false" class=" bg-gray-300 p-3 rounded hover:bg-gray-400">閉じる</button>
       </div>
     </div>
-    
+  </Modal>
+
+  <!--削除確認-->
+  <Modal 
+      :show="delete_article_id" 
+      :addClass="`z-50 mt-24`"
+      @close="delete_article_id = null"
+    >
+      <div class="p-6">
+          <h2 class="text-lg font-medium text-gray-800">
+              本当に削除してもよろしいですか？ 
+          </h2>
+
+          <div class="mt-6 flex justify-end">
+              <SecondaryButton @click="delete_article_id = null"> キャンセル </SecondaryButton>
+
+              <DangerButton
+                  class="ml-3 text-red-500"
+                  @click="deleteArticle"
+              >
+                  削除
+              </DangerButton>
+          </div>
+      </div>
   </Modal>
 </template>

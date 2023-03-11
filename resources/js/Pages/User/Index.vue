@@ -17,8 +17,6 @@ const props = defineProps({
   errors: Object
 })
 
-const delete_article_id = ref(null);
-
 const show = ref(false);
 
 const show_followers = ref(false);
@@ -28,15 +26,6 @@ const show_following = ref(false);
 const followers = ref([]);
 
 const follows = ref([]);
-
-const deleteArticle = () => {
-  router.delete(route('article.delete', {'article': delete_article_id.value}), {
-    onSuccess: () => { 
-      delete_article_id.value = null;
-      show.value = false;
-    }
-  })
-}
 
 const show_followers_modal = async () => {
   show_followers.value = true;
@@ -130,23 +119,7 @@ const show_follows_modal = async () => {
                       :key="article.id" 
                       class="p-4 w-1/2 md:w-1/3 lg:w-1/4"
                     >
-                      <LinkCard :article="article">
-                        <div class="mt-3 space-x-3 text-sm">
-                          <button 
-                            @click="delete_article_id = article.id"
-                            class="bg-red-400 hover:bg-red-500 text-white py-2 px-3 rounded"
-                          >
-                            削除
-                          </button>
-                          <Link
-                            :href="route('article.edit', {'article': article.id})"
-                            as="button" 
-                            class="bg-blue-400 hover:bg-blue-500 text-white py-2 px-3 rounded"
-                          >
-                            編集
-                          </Link>
-                        </div>
-                      </LinkCard>
+                      <LinkCard :article="article" />
                     </div>
                   </div>
                 </div>
@@ -240,28 +213,4 @@ const show_follows_modal = async () => {
         <div v-else class="p-3 text-sm text-gray-700">フォロしていません</div>
       </div>
     </Modal>
-
-    <!--削除確認-->
-    <Modal 
-      :show="delete_article_id" 
-      :addClass="`z-50 mt-24`"
-      @close="delete_article_id = null"
-    >
-      <div class="p-6">
-          <h2 class="text-lg font-medium text-gray-800">
-              本当に削除してもよろしいですか？ 
-          </h2>
-
-          <div class="mt-6 flex justify-end">
-              <SecondaryButton @click="delete_article_id = null"> キャンセル </SecondaryButton>
-
-              <DangerButton
-                  class="ml-3"
-                  @click="deleteArticle"
-              >
-                  削除
-              </DangerButton>
-          </div>
-      </div>
-  </Modal>
 </template>
